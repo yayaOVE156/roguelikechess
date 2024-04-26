@@ -98,7 +98,7 @@ int main() {
     }
 
     // GLFW window creation
-    GLFWwindow* window = glfwCreateWindow(1200, 800, "Viewport", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1920, 1080, "Rouge Like Chess", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -117,7 +117,7 @@ int main() {
 
     // Load the model using Assimp
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile("bishop.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene = importer.ReadFile("../OpenGL Models/Bishop.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
         return -1;
