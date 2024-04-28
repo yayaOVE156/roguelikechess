@@ -1,9 +1,11 @@
 ﻿  main.cpp
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(42,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(43,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(47,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(48,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(49,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(50,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(74,16): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  ChessRogue.vcxproj -> D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(66,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(67,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(71,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(72,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(73,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(74,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(98,16): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  ChessRogue.vcxproj -> D:\Chrome Downloads\ChessRogue\roguelikechess\x64\Debug\ChessRogue.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

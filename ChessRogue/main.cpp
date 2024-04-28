@@ -8,12 +8,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Camera parameters
+// camera
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 7.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 4.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-// Camera movement speed
 float cameraSpeed = 0.05f;
 
 // Mouse input
@@ -21,6 +20,13 @@ bool firstMouse = true;
 float lastX = 400, lastY = 300;
 float yaw = -90.0f, pitch = 0.0f;
 float fov = 45.0f;
+
+// model to select
+int selectedModelIndex = 0;
+
+// what controls model movement
+float modelXPosition1 = 0.0f;
+float modelXPosition2 = 0.0f;
 
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -35,6 +41,24 @@ void processInput(GLFWwindow* window) {
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+    // model select
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        // model toggle
+        selectedModelIndex = (selectedModelIndex == 0) ? 1 : 0;
+    }
+
+    // movement
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && selectedModelIndex != -1) {
+        // Move the selected model in the x-direction
+        if (selectedModelIndex == 0) {
+            modelXPosition1 += 0.1f; // Adjust the movement amount as needed
+        }
+        else {
+			modelXPosition2 += 0.1f; // Adjust the movement amount as needed
+		}
+        
+    }
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -78,13 +102,13 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
         fov = 45.0f;
 }
 
-void renderModel(const aiMesh* mesh) {
+void renderModel(const aiMesh* mesh, float xOffset) {
     glBegin(GL_TRIANGLES);
     for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
         const aiFace& face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             unsigned int index = face.mIndices[j];
-            glVertex3fv(reinterpret_cast<const GLfloat*>(&mesh->mVertices[index]));
+            glVertex3f(mesh->mVertices[index].x + xOffset, mesh->mVertices[index].y, mesh->mVertices[index].z);
         }
     }
     glEnd();
@@ -98,7 +122,7 @@ int main() {
     }
 
     // GLFW window creation
-    GLFWwindow* window = glfwCreateWindow(1920, 1080, "Rouge Like Chess", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 800, "Rougelike Chess", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -115,10 +139,16 @@ int main() {
         return -1;
     }
 
-    // Load the model using Assimp
+    // imports the models 1 and 2 respectively
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile("../OpenGL Models/Bishop.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
+        return -1;
+    }
+    Assimp::Importer importer2;
+    const aiScene* scene2 = importer2.ReadFile("../OpenGL Models/Pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
+    if (!scene2 || scene2->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
         return -1;
     }
@@ -141,7 +171,7 @@ int main() {
         glfwGetFramebufferSize(window, &width, &height);
         glm::mat4 projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
-        // Render each mesh in the scene
+        // prepares the models for rendering
         for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
             const aiMesh* mesh = scene->mMeshes[i];
             glLoadIdentity();
@@ -149,7 +179,17 @@ int main() {
             glLoadMatrixf(glm::value_ptr(view));
             glMatrixMode(GL_PROJECTION);
             glLoadMatrixf(glm::value_ptr(projection));
-            renderModel(mesh);
+            renderModel(mesh, modelXPosition1);
+        }
+
+        for (unsigned int i = 0; i < scene2->mNumMeshes; ++i) {
+            const aiMesh* mesh = scene2->mMeshes[i];
+            glLoadIdentity();
+            glMatrixMode(GL_MODELVIEW);
+            glLoadMatrixf(glm::value_ptr(view));
+            glMatrixMode(GL_PROJECTION);
+            glLoadMatrixf(glm::value_ptr(projection));
+            renderModel(mesh, modelXPosition2);
         }
 
         // Swap front and back buffers
