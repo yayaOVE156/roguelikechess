@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include <GL/glut.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <assimp/Importer.hpp>
@@ -7,7 +8,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <string>
+#include "keyboard.h"
+#include "render.h"
 
+
+
+//gamestart bool
+bool gamestart = false;
 // camera
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 7.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 4.0f);
@@ -26,40 +36,10 @@ int selectedModelIndex = 0;
 
 // what controls model movement
 float modelXPosition1 = 0.0f;
-float modelXPosition2 = 0.0f;
+float modelXPosition2 = 4.0f;
 
-void processInput(GLFWwindow* window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
 
-    // Camera controls
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
-    // model select
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        // model toggle
-        selectedModelIndex = (selectedModelIndex == 0) ? 1 : 0;
-    }
-
-    // movement
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && selectedModelIndex != -1) {
-        // Move the selected model in the x-direction
-        if (selectedModelIndex == 0) {
-            modelXPosition1 += 0.1f; // Adjust the movement amount as needed
-        }
-        else {
-			modelXPosition2 += 0.1f; // Adjust the movement amount as needed
-		}
-        
-    }
-}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (firstMouse) {
@@ -102,19 +82,46 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
         fov = 45.0f;
 }
 
-void renderModel(const aiMesh* mesh, float xOffset) {
-    glBegin(GL_TRIANGLES);
-    for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
-        const aiFace& face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; ++j) {
-            unsigned int index = face.mIndices[j];
-            glVertex3f(mesh->mVertices[index].x + xOffset, mesh->mVertices[index].y, mesh->mVertices[index].z);
-        }
-    }
-    glEnd();
+
+
+void welcometext() {
+    using namespace std;
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 1000, 0, 1000);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    
+    glColor3f(0.0f, 0.0f, 0.0f); 
+
+    // Calculate text position
+    const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game";
+    int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_12, (const unsigned char*)str);
+    int x = (1000 - textWidth) / 2; // Center horizontally
+    int y = 1000 / 2; // Center vertically
+
+    // Position the text
+    glRasterPos2i(x, y);
+
+    // Render the text
+    for (int i = 0; str[i] != '\0'; ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str[i]);
+    };
 }
 
-int main() {
+
+int main(int argc, char** argv) {
+
+
+    glutInit(&argc, argv);
+
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -122,7 +129,7 @@ int main() {
     }
 
     // GLFW window creation
-    GLFWwindow* window = glfwCreateWindow(1000, 800, "Rougelike Chess", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 1000, "Rougelike Chess", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -138,7 +145,9 @@ int main() {
         std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
         return -1;
     }
-
+    glClear(GL_COLOR_BUFFER_BIT);
+ 
+    glfwSwapBuffers(window);
     // imports the models 1 and 2 respectively
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile("../OpenGL Models/Bishop.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -159,9 +168,10 @@ int main() {
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         // Process input
-        processInput(window);
 
-        // Clear the color and depth buffers
+        processInput(window, cameraPos, cameraFront, cameraSpeed, selectedModelIndex, modelXPosition1, modelXPosition2,gamestart);
+
+        // Clear the color and depth buffers aka background color
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -171,25 +181,21 @@ int main() {
         glfwGetFramebufferSize(window, &width, &height);
         glm::mat4 projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
-        // prepares the models for rendering
-        for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
-            const aiMesh* mesh = scene->mMeshes[i];
-            glLoadIdentity();
-            glMatrixMode(GL_MODELVIEW);
-            glLoadMatrixf(glm::value_ptr(view));
-            glMatrixMode(GL_PROJECTION);
-            glLoadMatrixf(glm::value_ptr(projection));
-            renderModel(mesh, modelXPosition1);
-        }
 
-        for (unsigned int i = 0; i < scene2->mNumMeshes; ++i) {
-            const aiMesh* mesh = scene2->mMeshes[i];
-            glLoadIdentity();
-            glMatrixMode(GL_MODELVIEW);
-            glLoadMatrixf(glm::value_ptr(view));
-            glMatrixMode(GL_PROJECTION);
-            glLoadMatrixf(glm::value_ptr(projection));
-            renderModel(mesh, modelXPosition2);
+        
+        if (gamestart) {
+
+            renderer bishoptest(scene, view, projection, modelXPosition1);
+            renderer pawntest(scene2, view, projection, modelXPosition2);
+            bishoptest.Render();
+            pawntest.Render();
+
+            // prepares the models for rendering
+           
+
+        }
+        else {
+            welcometext();
         }
 
         // Swap front and back buffers
