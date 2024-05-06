@@ -9,4 +9,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <string.h>
 
-void processInput(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraFront, float& cameraSpeed, int& selectedModelIndex, float& modelXPosition1, float& modelXPosition2, bool& gamestart);
+
+extern glm::vec3 cameraPos;
+extern glm::vec3 cameraFront;
+extern glm::vec3 cameraUp;
+extern float cameraSpeed;
+extern bool gamestart;
+
+void processInput(unsigned char key, int x, int y);

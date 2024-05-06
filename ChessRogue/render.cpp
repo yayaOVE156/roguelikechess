@@ -27,11 +27,11 @@ void renderer::Render() {
 
     for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
         const aiMesh* mesh = scene->mMeshes[i];
-        renderModel(mesh);
+        RenderModel(mesh);
     }
 }
 
-void renderer::renderModel(const aiMesh* mesh) {
+void renderer::RenderModel(const aiMesh* mesh) {
     glBegin(GL_TRIANGLES);
     for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
         const aiFace& face = mesh->mFaces[i];

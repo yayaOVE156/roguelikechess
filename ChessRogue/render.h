@@ -26,5 +26,5 @@ private:
     glm::mat4 projection;
     float modelXPosition;
 
-    void renderModel(const aiMesh* mesh);
+    void RenderModel(const aiMesh* mesh);
 };

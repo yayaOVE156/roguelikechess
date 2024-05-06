@@ -1,14 +1,8 @@
 ﻿  main.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(46,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(47,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(51,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(52,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(53,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(54,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(78,16): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  maincomments.cpp
-  Generating Code...
-x64\Debug\keyboard.obj : warning LNK4042: object specified more than once; extras ignored
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(46,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(47,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(53,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(54,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   ChessRogue.vcxproj -> D:\Chrome Downloads\ChessRogue\roguelikechess\x64\Debug\ChessRogue.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
