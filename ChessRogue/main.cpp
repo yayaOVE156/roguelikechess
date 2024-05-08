@@ -39,7 +39,7 @@ int windowHeight = 1000;
 
 
 
-
+//Mouse controlling function, I believe it will be removed due to the camera being fixed in the future
 
 void mouse_callback(int x, int y) {
     if (firstMouse) {
@@ -74,7 +74,7 @@ void mouse_callback(int x, int y) {
     glutPostRedisplay();
 }
 
-
+//welcome text, all it does is just display a welcome message and instruction to start the game
 void welcometext() {
     using namespace std;
 
@@ -119,20 +119,27 @@ void welcometext() {
 //    glEnd();
 //}
 
-void display() {
 
+
+//Display function
+
+void display() {
+    //sets the color for the background
     glClearColor(0.2f, 0.6f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Set up view and projection matrices
+    // sets the camera view
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
     glm::mat4 projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
-    // Render the scene
+    // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
+    //When the game starts it begins to render the models
     if (gamestart) {
+        //Makes an instance of renderer object from renderer class and sends the scene(which has the model loaded) the window and projection matrix
         renderer pawntest(scene, view, projection, 0.0f);
+        //renders the model
         pawntest.Render();
     }
     else {
@@ -142,7 +149,7 @@ void display() {
     glutSwapBuffers();
 }
 
-void reshape(int w, int h) {
+void reshape(int w, int h) { //Not sure what this does but it has to do with camera settings
     glViewport(0, 0, w, h);
 }
 
@@ -153,28 +160,30 @@ int main(int argc, char** argv) {
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("Roguelike Chess");
 
+
+    //makes an assimp instance importer object which loads in the model
     Assimp::Importer importer;
     scene = importer.ReadFile("../OpenGL Models/Pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
         return -1;
     }
+
+    //display and control related functions
+
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutPassiveMotionFunc(mouse_callback);
+
+    //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
 
 
-    // Initialize GLEW
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
-        return -1;
-    }
+  
 
-    // Load the model using Assimp
+  
     
-
+    // makes the 3d model have a depth feel to it
     glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
