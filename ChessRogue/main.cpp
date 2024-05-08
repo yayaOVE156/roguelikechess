@@ -15,7 +15,10 @@
 
 //gamestart bool
 bool gamestart = false;
-// Define the global scene variable
+
+
+
+// Model pointers
 const aiScene* scene = nullptr;
 
 // Camera parameters

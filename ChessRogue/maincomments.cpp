@@ -46,7 +46,12 @@ void renderModel(const aiMesh* mesh, float xOffset) {
 
 
 
-
+              // Initializes the glew library
+   /* GLenum err = glewInit();
+    if (err != GLEW_OK) {
+        std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
+        return -1;
+    }*/
 
 
 
