@@ -148,10 +148,12 @@
     <ClCompile Include="ChessPieces\Pawn.cpp" />
     <ClCompile Include="ChessPieces\Queen.cpp" />
     <ClCompile Include="render.cpp" />
+    <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessPieces\Base.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

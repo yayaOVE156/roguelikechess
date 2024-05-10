@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include <GL/glut.h>
 #include <GL/freeglut.h>
 #include <iostream>
 #include <assimp/Importer.hpp>
@@ -7,16 +8,24 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string>
+#include <iomanip>
+
+//custom header files
 #include "keyboard.h"
 #include "render.h"
-#include <string>
-
-
-
 //gamestart bool
 bool gamestart = false;
 
+//enum for teams
+enum teams
+{
+    white,
+    black
+};
 
+//var of type teams (equal white since they always start)
+teams teamColor = white;
 
 // Model pointers
 const aiScene* scene = nullptr;
@@ -110,6 +119,58 @@ void welcometext() {
     };
 }
 
+void timerCallback(int value) {
+    if (currentTimer != nullptr && currentTimer->isActive()) {
+        glutPostRedisplay();
+        glutTimerFunc(1000 / 60, timerCallback, 0);
+    }
+}
+
+void timerText(int team) {
+    using namespace std;
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(500, 0, 0, 1000);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if (team == teamColor) {
+        glColor3f(0.0f, 0.0f, 0.0f);
+    }
+    else {
+        glColor3f(1.0f, 1.0f, 1.0f);
+    }
+
+    std::string timerText = "Time remaining: ";
+    if (currentTimer != nullptr && currentTimer->isActive()) {
+        std::chrono::steady_clock::duration elapsed = currentTimer->elapsed();
+        int seconds = std::chrono::duration_cast<std::chrono::seconds>(elapsed).count();
+        int minutes = seconds / 60;
+        seconds %= 60;
+        timerText += std::to_string(minutes) + ":" + std::to_string(seconds);
+    }
+    else {
+        timerText += "00:00";
+    }
+    for (char c : timerText) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
+    // Calculate text position
+    
+    float x = -0.9f;
+    float y = 0.9f;
+
+    // Position the text
+    glRasterPos2i(x, y);
+}
+
 //void renderModel(const aiMesh* mesh) {
 //    glBegin(GL_TRIANGLES);
 //    for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
@@ -145,6 +206,8 @@ void display() {
         renderer pawntest(scene, view, projection, 0.0f);
         //renders the model
         pawntest.Render();
+
+        
     }
     else {
         welcometext();

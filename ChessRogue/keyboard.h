@@ -1,14 +1,15 @@
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <GL/freeglut.h>
 #include <iostream>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string.h>
+#include "timer.h"
 
+Timer whiteTimer;
+Timer blackTimer;
+Timer* currentTimer = nullptr;
 
 extern glm::vec3 cameraPos;
 extern glm::vec3 cameraFront;
