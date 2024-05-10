@@ -30,9 +30,51 @@
     <ClCompile Include="maincomments.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChessPieces\Pawn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\King.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Queen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Bishop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Knight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Rook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Bishop.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\King.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Knight.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Pawn .h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Queen.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Rook.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPieces\Base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessPieces\Base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

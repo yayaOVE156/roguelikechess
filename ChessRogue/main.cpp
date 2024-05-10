@@ -140,6 +140,7 @@ void display() {
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
     if (gamestart) {
+
         //Makes an instance of renderer object from renderer class and sends the scene(which has the model loaded) the window and projection matrix
         renderer pawntest(scene, view, projection, 0.0f);
         //renders the model
@@ -155,6 +156,18 @@ void display() {
 void reshape(int w, int h) { //Not sure what this does but it has to do with camera settings
     glViewport(0, 0, w, h);
 }
+
+
+
+void importer(std::string path) {
+    Assimp::Importer importer;
+	scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+		std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
+	}
+}
+
+
 
 int main(int argc, char** argv) {
     
