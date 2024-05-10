@@ -30,6 +30,10 @@ void processInput(unsigned char key, int x, int y) {
     case'n':
 		gamestart = true;
 		break;
+    case 'g':
+        //increment g
+        (*g)++;
+        break;
     }
 
     glutPostRedisplay();

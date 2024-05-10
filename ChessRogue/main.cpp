@@ -10,6 +10,8 @@
 #include "keyboard.h"
 #include "render.h"
 #include <string>
+#include "Chesspieces.h"
+
 
 
 
@@ -18,8 +20,10 @@ bool gamestart = false;
 
 
 
-// Model pointers
-const aiScene* scene = nullptr;
+// Model pointers white
+const aiScene* scene;
+
+
 
 // Camera parameters
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
@@ -40,6 +44,8 @@ float fov = 45.0f;
 int windowWidth = 1000;
 int windowHeight = 1000;
 
+
+float* g;
 
 
 //Mouse controlling function, I believe it will be removed due to the camera being fixed in the future
@@ -123,7 +129,7 @@ void welcometext() {
 //}
 
 
-
+Pawn whitepawn[8] = { Pawn(0.0f, 0.0f), Pawn(4.0f, 0.0f), Pawn(8.0f, 0.0f), Pawn(12.0f, 0.0f), Pawn(16.0f, 0.0f), Pawn(20.0f, 0.0f), Pawn(24.0f, 0.0f), Pawn(28.0f, 0.0f) };
 //Display function
 
 void display() {
@@ -140,11 +146,27 @@ void display() {
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
     if (gamestart) {
-
+       
         //Makes an instance of renderer object from renderer class and sends the scene(which has the model loaded) the window and projection matrix
-        renderer pawntest(scene, view, projection, 0.0f);
-        //renders the model
-        pawntest.Render();
+        /*renderer whitepawnt = renderer(scene, view, projection, 0.0f, 0.0f);
+        whitepawnt.Render()*/;
+        
+        
+
+       
+        for (int i = 0; i < 8; i++) {
+			whitepawn[i].Render(view, projection);
+		}
+        
+        
+        //modelzposition never changes
+
+       
+       
+            
+
+        		
+		
     }
     else {
         welcometext();
@@ -159,13 +181,6 @@ void reshape(int w, int h) { //Not sure what this does but it has to do with cam
 
 
 
-void importer(std::string path) {
-    Assimp::Importer importer;
-	scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-		std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-	}
-}
 
 
 
@@ -176,14 +191,11 @@ int main(int argc, char** argv) {
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("Roguelike Chess");
 
-
+    g=&whitepawn[1].modelZPosition;
+    
     //makes an assimp instance importer object which loads in the model
-    Assimp::Importer importer;
-    scene = importer.ReadFile("../OpenGL Models/Pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-        std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-        return -1;
-    }
+    Assimp::Importer importer;  
+    scene = importer.ReadFile("../OpenGL Models/pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
 
     //display and control related functions
 
@@ -194,7 +206,7 @@ int main(int argc, char** argv) {
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
 
-
+   
   
 
   

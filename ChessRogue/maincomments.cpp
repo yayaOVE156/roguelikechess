@@ -57,4 +57,3 @@ void renderModel(const aiMesh* mesh, float xOffset) {
 
 
 
-*/

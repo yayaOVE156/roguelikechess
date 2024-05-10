@@ -1,3 +1,7 @@
+#ifndef RENDERER_H
+#define RENDERER_H
+
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GLFW/glfw3.h>
@@ -17,7 +21,7 @@
 
 class renderer {
 public:
-    renderer(const aiScene* scene, const glm::mat4& view, const glm::mat4& projection, float modelXPosition);
+    renderer(const aiScene* scene, const glm::mat4& view, const glm::mat4& projection, float modelXPosition, float modelZPosition);
     void Render();
 
 private:
@@ -25,6 +29,10 @@ private:
     glm::mat4 view;
     glm::mat4 projection;
     float modelXPosition;
+    float modelZPosition;
 
     void RenderModel(const aiMesh* mesh);
 };
+
+
+#endif // RENDERER_H

@@ -1,14 +1,8 @@
 ﻿  main.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(49,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(50,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(56,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(57,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(194,5): error C2065: 'string': undeclared identifier
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(194,12): error C2146: syntax error: missing ';' before identifier 'HeapAlloc'
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(194,22): error C2659: '=': function as left operand
-  maincomments.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\maincomments.cpp(60,1): warning C4138: '*/' found outside of comment
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\maincomments.cpp(60,2): error C2059: syntax error: '/'
-  Pawn.cpp
-  Queen.cpp
-  Generating Code...
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(55,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(56,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(62,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(63,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  ChessRogue.vcxproj -> D:\Chrome Downloads\ChessRogue\roguelikechess\x64\Debug\ChessRogue.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
