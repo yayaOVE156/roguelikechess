@@ -1,8 +1,1 @@
-﻿  main.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(55,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(56,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(62,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(63,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  ChessRogue.vcxproj -> D:\Chrome Downloads\ChessRogue\roguelikechess\x64\Debug\ChessRogue.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+﻿  ChessRogue.vcxproj -> C:\Users\moham\Desktop\Coding\C++\opengl\roguelikechess\x64\Debug\ChessRogue.exe
