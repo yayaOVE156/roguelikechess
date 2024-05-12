@@ -1,26 +1,6 @@
-﻿  keyboard.h
-  main.cpp
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(58,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(59,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(65,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(66,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(153,21): warning C4244: 'initializing': conversion from '_Rep' to 'int', possible loss of data
-          with
-          [
-              _Rep=__int64
-          ]
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(171,22): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(171,19): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
-  Generating Code...
-x64\Debug\Bishop.obj : warning LNK4042: object specified more than once; extras ignored
-x64\Debug\King.obj : warning LNK4042: object specified more than once; extras ignored
-x64\Debug\Knight.obj : warning LNK4042: object specified more than once; extras ignored
-x64\Debug\Rook.obj : warning LNK4042: object specified more than once; extras ignored
-keyboard.obj : error LNK2005: "class Timer * currentTimer" (?currentTimer@@3PEAVTimer@@EA) already defined in main.obj
-keyboard.obj : error LNK2005: "class Timer whiteTimer" (?whiteTimer@@3VTimer@@A) already defined in main.obj
-keyboard.obj : error LNK2005: "class Timer blackTimer" (?blackTimer@@3VTimer@@A) already defined in main.obj
-x64\Debug\keyboard.obj : warning LNK4042: object specified more than once; extras ignored
-x64\Debug\Queen.obj : warning LNK4042: object specified more than once; extras ignored
-main.obj : error LNK2019: unresolved external symbol "void __cdecl processInput(unsigned char,int,int)" (?processInput@@YAXEHH@Z) referenced in function main
-..\Lib\glfw3.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
-D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe : fatal error LNK1120: 1 unresolved externals
+﻿  main.cpp
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(54,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(55,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(61,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(62,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  ChessRogue.vcxproj -> D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe

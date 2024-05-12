@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut.h>
-#include <iostream>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -10,22 +9,15 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <iomanip>
+#include <iostream>
 
 //custom header files
 #include "keyboard.h"
 #include "render.h"
+#include "timer.h"
+
 //gamestart bool
 bool gamestart = false;
-
-//enum for teams
-enum teams
-{
-    white,
-    black
-};
-
-//var of type teams (equal white since they always start)
-teams teamColor = white;
 
 // Model pointers
 const aiScene* scene = nullptr;
@@ -34,6 +26,10 @@ const aiScene* scene = nullptr;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+//timers
+int timeMinutes = 10;
+int timeSeconds = 10;
 
 // Camera movement speed
 float cameraSpeed = 0.05f;
@@ -119,57 +115,29 @@ void welcometext() {
     };
 }
 
+//intializing timers;
+void intializeTimers(int num) {
+    blackTimer.setDuration(std::chrono::seconds(num));
+    whiteTimer.setDuration(std::chrono::seconds(num));
+}
+
 void timerCallback(int value) {
-    if (currentTimer != nullptr && currentTimer->isActive()) {
+    printf("test");
+    if (currentTimer != nullptr && currentTimer->isActive() && !currentTimer->hasExpired()) {
         glutPostRedisplay();
         glutTimerFunc(1000 / 60, timerCallback, 0);
-    }
+    }   
 }
 
-void timerText(int team) {
-    using namespace std;
-
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // Set up projection matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(500, 0, 0, 1000);
-
-    // Set up modelview matrix
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    if (team == teamColor) {
-        glColor3f(0.0f, 0.0f, 0.0f);
+void checkTimeOut() {
+    if (currentTimer != nullptr && !currentTimer->isActive() && currentTimer->hasExpired()) {
+        "this team has lost";
     }
-    else {
-        glColor3f(1.0f, 1.0f, 1.0f);
-    }
-
-    std::string timerText = "Time remaining: ";
-    if (currentTimer != nullptr && currentTimer->isActive()) {
-        std::chrono::steady_clock::duration elapsed = currentTimer->elapsed();
-        int seconds = std::chrono::duration_cast<std::chrono::seconds>(elapsed).count();
-        int minutes = seconds / 60;
-        seconds %= 60;
-        timerText += std::to_string(minutes) + ":" + std::to_string(seconds);
-    }
-    else {
-        timerText += "00:00";
-    }
-    for (char c : timerText) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
-    }
-
-    // Calculate text position
-    
-    float x = -0.9f;
-    float y = 0.9f;
-
-    // Position the text
-    glRasterPos2i(x, y);
+    std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
+    std::cout << "blackTimer: " << std::chrono::duration_cast<std::chrono::seconds>(blackTimer.remaining()).count() << std::endl;
 }
+
+
 
 //void renderModel(const aiMesh* mesh) {
 //    glBegin(GL_TRIANGLES);
@@ -206,13 +174,11 @@ void display() {
         renderer pawntest(scene, view, projection, 0.0f);
         //renders the model
         pawntest.Render();
-
-        
     }
     else {
         welcometext();
     }
-
+    checkTimeOut();
     glutSwapBuffers();
 }
 
@@ -240,6 +206,10 @@ int main(int argc, char** argv) {
     glutCreateWindow("Roguelike Chess");
 
 
+    //intialize timers
+    intializeTimers(timeSeconds);
+
+
     //makes an assimp instance importer object which loads in the model
     Assimp::Importer importer;
     scene = importer.ReadFile("../OpenGL Models/Pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -256,14 +226,16 @@ int main(int argc, char** argv) {
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
-
-
-  
-
-  
     
     // makes the 3d model have a depth feel to it
     glEnable(GL_DEPTH_TEST);
+
+   
+    // Start the timer callback for displaying updates
+    if(gamestart)
+        glutTimerFunc(1000 / 60, timerCallback, 0);
+
+
 
     glutMainLoop();
     return 0;

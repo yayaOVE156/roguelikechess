@@ -7,10 +7,14 @@
 #include <string.h>
 #include "timer.h"
 
-Timer whiteTimer;
-Timer blackTimer;
-Timer* currentTimer = nullptr;
-
+ extern Timer blackTimer;
+ extern Timer whiteTimer;
+ extern Timer* currentTimer;
+ enum teams {
+	white,
+	black
+};
+extern teams teamColor;
 extern glm::vec3 cameraPos;
 extern glm::vec3 cameraFront;
 extern glm::vec3 cameraUp;

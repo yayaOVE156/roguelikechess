@@ -1,6 +1,13 @@
 #include <GL/glew.h>
 #include "keyboard.h"
 
+//var of type teams (equal white since they always start)
+teams teamColor;
+
+//vars for Timers
+ Timer blackTimer;
+ Timer whiteTimer;
+ extern Timer* currentTimer = nullptr;
 
 void processInput(unsigned char key, int x, int y) {
     if (key == 27) // ESC key
@@ -22,24 +29,30 @@ void processInput(unsigned char key, int x, int y) {
         break;
     case'n':
 		gamestart = true;
-        if (currentTimer == &whiteTimer) {
-            whiteTimer.start();
-            currentTimer = &whiteTimer;
-        }
-    case 't':
-        if (currentTimer == &whiteTimer) {
-            whiteTimer.stop();
-            blackTimer.start();
-            currentTimer = &blackTimer;
-        }
-        else {
-            blackTimer.stop();
-            whiteTimer.start();
-            currentTimer = &whiteTimer;
-        }
+        teamColor = white;
+        currentTimer = &whiteTimer;
+        currentTimer->start();
         break;
         
+    case 't':
+        currentTimer->stop();
+        if (teamColor == white) {
+            teamColor = black;
+            currentTimer = &blackTimer;
+            printf("current team is black");
+        }
+        else {
+            teamColor = white;
+            currentTimer = &whiteTimer;
+            printf("current team is white");
+        }
+        currentTimer->start();
+        break;
+    case 'r':
+        std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remaining()).count() << std::endl;
     }
+    
+
 
     glutPostRedisplay();
 }
