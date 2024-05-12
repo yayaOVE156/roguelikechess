@@ -396,3 +396,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+ChessRogue/x64/Debug/ChessRogue.ilk
+ChessRogue/x64/Debug/ChessRogue.log
+ChessRogue/x64/Debug/ChessRogue.tlog/CL.command.1.tlog
+ChessRogue/x64/Debug/ChessRogue.tlog/CL.read.1.tlog
+ChessRogue/x64/Debug/ChessRogue.tlog/CL.write.1.tlog
+ChessRogue/x64/Debug/vc143.idb
+ChessRogue/x64/Debug/vc143.pdb
+x64/Debug/ChessRogue.exe
+x64/Debug/ChessRogue.pdb
