@@ -31,7 +31,7 @@ void processInput(unsigned char key, int x, int y) {
 		gamestart = true;
 		break;
     case 'g':
-        //increment g
+        //increment the modelz position of the pawn
         (*g)++;
         break;
     }
