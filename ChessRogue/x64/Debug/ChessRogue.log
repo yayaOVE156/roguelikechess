@@ -1,9 +1,1 @@
-﻿  Chesspieces.cpp
-  keyboard.cpp
-  keyboard.h
-  maincomments.cpp
-  render.cpp
-  Generating Code...
-  LINK : C:\Users\moham\Desktop\Coding\C++\opengl\roguelikechess\x64\Debug\ChessRogue.exe not found or not built by the last incremental link; performing full link
-x64\Debug\keyboard.obj : warning LNK4042: object specified more than once; extras ignored
-  ChessRogue.vcxproj -> C:\Users\moham\Desktop\Coding\C++\opengl\roguelikechess\x64\Debug\ChessRogue.exe
+﻿  ChessRogue.vcxproj -> C:\Users\moham\Desktop\Coding\C++\opengl\roguelikechess\x64\Debug\ChessRogue.exe
