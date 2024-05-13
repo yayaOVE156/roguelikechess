@@ -16,6 +16,7 @@ BasePiece::BasePiece(float modelXPosition, float modelZPosition)
 void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
     Assimp::Importer importer;
     scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+    std::cout << scene << std::endl;
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(view));
@@ -23,6 +24,7 @@ void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
     glLoadMatrixf(glm::value_ptr(projection));
     
     for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
+
         const aiMesh* mesh = scene->mMeshes[i];
         RenderModel(mesh);
     }

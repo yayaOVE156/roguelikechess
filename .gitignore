@@ -406,3 +406,4 @@ ChessRogue/x64/Debug/vc143.pdb
 x64/Debug/ChessRogue.exe
 x64/Debug/ChessRogue.pdb
 *.log
+*.tlog
