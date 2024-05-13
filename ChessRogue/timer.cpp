@@ -20,6 +20,7 @@ void Timer::stop() {
 void Timer::setDuration(std::chrono::steady_clock::duration dur)
 {
 	duration = dur;
+	remain = dur;
 }
 
 std::chrono::steady_clock::duration Timer::remaining() {

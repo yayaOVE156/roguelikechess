@@ -46,10 +46,10 @@ void processInput(unsigned char key, int x, int y) {
             currentTimer = &whiteTimer;
             printf("current team is white");
         }
-        currentTimer->start();
+        currentTimer->start(currentTimer->remainingTime());
         break;
     case 'r':
-        std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remaining()).count() << std::endl;
+        std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remainingTime()).count() << std::endl;
     }
     
 

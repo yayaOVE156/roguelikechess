@@ -138,6 +138,39 @@ void checkTimeOut() {
 }
 
 
+//Timer Text
+void timerText() {
+    using namespace std;
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 1000, 0, 1000);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+
+    glColor3f(0.0f, 0.0f, 0.0f);
+
+    // Calculate text position
+    const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game";
+    int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_12, (const unsigned char*)str);
+    int x = (windowWidth - textWidth) / 2;
+    int y = windowHeight / 2;
+
+    // Position the text
+    glRasterPos2i(x, y);
+
+    // Render the text
+    for (int i = 0; str[i] != '\0'; ++i) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str[i]);
+    };
+}
+
 
 //void renderModel(const aiMesh* mesh) {
 //    glBegin(GL_TRIANGLES);

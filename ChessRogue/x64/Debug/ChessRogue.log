@@ -1,6 +1,2 @@
-﻿  main.cpp
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(54,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(55,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(61,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(62,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  timer.cpp
   ChessRogue.vcxproj -> D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe
