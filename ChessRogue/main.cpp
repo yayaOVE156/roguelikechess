@@ -102,7 +102,7 @@ void welcometext() {
     glColor3f(0.0f, 0.0f, 0.0f);
 
     // Calculate text position
-    const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game";
+    const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game and G to move one of the pawns ;)";
     int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_12, (const unsigned char*)str);
     int x = (windowWidth - textWidth) / 2; 
     int y = windowHeight / 2; 
@@ -129,6 +129,9 @@ void welcometext() {
 //}
 
 
+//constructor of pawn takes in parameters of x and z positions
+// array that makes 8 of them
+
 Pawn whitepawn[8] = { Pawn(0.0f, 0.0f), Pawn(4.0f, 0.0f), Pawn(8.0f, 0.0f), Pawn(12.0f, 0.0f), Pawn(16.0f, 0.0f), Pawn(20.0f, 0.0f), Pawn(24.0f, 0.0f), Pawn(28.0f, 0.0f) };
 //Display function
 
@@ -147,26 +150,12 @@ void display() {
     //When the game starts it begins to render the models
     if (gamestart) {
        
-        //Makes an instance of renderer object from renderer class and sends the scene(which has the model loaded) the window and projection matrix
-        /*renderer whitepawnt = renderer(scene, view, projection, 0.0f, 0.0f);
-        whitepawnt.Render()*/;
-        
-        
-
-       
+      
+       //renders the 8 pawns
         for (int i = 0; i < 8; i++) {
 			whitepawn[i].Render(view, projection);
 		}
-        
-        
-        //modelzposition never changes
-
-       
-       
-            
-
-        		
-		
+      
     }
     else {
         welcometext();
@@ -190,12 +179,12 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("Roguelike Chess");
+    
 
+    //sets the g float pointer to point to one of the object's z position so that it gets changed in the keyboard.cpp;
     g=&whitepawn[1].modelZPosition;
     
-    //makes an assimp instance importer object which loads in the model
-    Assimp::Importer importer;  
-    scene = importer.ReadFile("../OpenGL Models/pawn.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
+   
 
     //display and control related functions
 

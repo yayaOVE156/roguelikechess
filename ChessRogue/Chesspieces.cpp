@@ -13,7 +13,14 @@
 BasePiece::BasePiece(float modelXPosition, float modelZPosition)
     :modelXPosition(modelXPosition), modelZPosition(modelZPosition) {}
 
+
+// Render function for the base piece class
+
 void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
+    //maybe inefficient as it loads the model everytime the Render() function is called
+    // a possible soltuion is to load the model in the constructor using a different pointer that points to the start address of the model
+    // then everytime the Render() is called a different pointer points to the start address of the model pointer
+    // think of it as like an for loop where int i is init outside of the loop, but when the loop starts it is set to 0
     Assimp::Importer importer;
     scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
     glLoadIdentity();
@@ -27,7 +34,7 @@ void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
         RenderModel(mesh);
     }
 }
-
+//uses the mesh to render it on the window
 void BasePiece::RenderModel(const aiMesh* mesh) {
     glBegin(GL_TRIANGLES);
     for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
@@ -46,7 +53,8 @@ Pawn::Pawn( float modelXPosition, float modelZPosition)
     
 }
 
-
+// rest of the pieces except they load the model first, but they are not used as the pawn is used for
+// testing purposes
 
 
 Rook::Rook( float modelXPosition, float modelZPosition)

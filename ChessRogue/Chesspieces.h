@@ -13,7 +13,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-
+//base piece class
+// it is the base foundation for the rest of the pieces
+// it has a model path, a scene, and a render model function
 
 
 class BasePiece {
