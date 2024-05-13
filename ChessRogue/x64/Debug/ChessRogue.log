@@ -1,6 +1,12 @@
-<<<<<<< Updated upstream
-﻿  ChessRogue.vcxproj -> C:\Users\moham\Desktop\Coding\C++\opengl\roguelikechess\x64\Debug\ChessRogue.exe
-=======
 ﻿  main.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(10,10): error C1083: Cannot open include file: 'keyboard.h': No such file or directory
->>>>>>> Stashed changes
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(56,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(57,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(63,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(64,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(226,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(245,9): error C2660: 'updateTimer': function does not take 0 arguments
+  D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(147,6):
+  see declaration of 'updateTimer'
+  D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(245,9):
+  while trying to match the argument list '()'
+  

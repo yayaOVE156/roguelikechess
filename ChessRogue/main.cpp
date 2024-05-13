@@ -11,8 +11,9 @@
 #include "render.h"
 #include <string>
 #include "Chesspieces.h"
-
-
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <chrono>
 
 
 //gamestart bool
@@ -116,6 +117,9 @@ void welcometext() {
     };
 }
 
+
+
+
 //void renderModel(const aiMesh* mesh) {
 //    glBegin(GL_TRIANGLES);
 //    for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
@@ -132,28 +136,113 @@ void welcometext() {
 Pawn whitepawn[8] = { Pawn(0.0f, 0.0f), Pawn(4.0f, 0.0f), Pawn(8.0f, 0.0f), Pawn(12.0f, 0.0f), Pawn(16.0f, 0.0f), Pawn(20.0f, 0.0f), Pawn(24.0f, 0.0f), Pawn(28.0f, 0.0f) };
 //Display function
 
+std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+const int gameTime = 600; // 10 minutes in seconds
+int timeRemaining = gameTime;
+
+// Function to update the timer
+void updateTimer() {
+    std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
+    std::chrono::duration<float> elapsedTime = currentTime - startTime;
+    timeRemaining = gameTime - static_cast<int>(elapsedTime.count());
+    if (timeRemaining < 0) {
+        timeRemaining = 0; // Ensure timeRemaining doesn't go negative
+    }
+}
+
+// Function to render the timer on the screen
+
+
+// Function to render the timer in 2D
+void renderTimer() {
+    int minutes = timeRemaining / 60;
+    int seconds = timeRemaining % 60;
+
+    // Set up 2D projection
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, glutGet(GLUT_WINDOW_WIDTH), 0, glutGet(GLUT_WINDOW_HEIGHT));
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Render the timer on the screen
+    int xPos = 10; // Adjust X position
+    int yPos = glutGet(GLUT_WINDOW_HEIGHT) - 20; // Adjust Y position
+    glColor3f(1.0f, 1.0f, 1.0f);
+    std::string timerString = "Time Remaining: " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds);
+    glRasterPos2i(xPos, yPos);
+    for (const char& c : timerString) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+    // Restore original projection
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
+
+
 void display() {
-    //sets the color for the background
-    glClearColor(0.2f, 0.6f, 1.0f, 1.0f);
+    glClearColor(1.0f, 0.5f, 0.0f,1.0f);
+    // Clear the color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // sets the camera view
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    int width = glutGet(GLUT_WINDOW_WIDTH);
+    // Set up the gradient colors
+    glm::vec3 sunsetColor1 = glm::vec3(1.0f, 0.5f, 0.0f); // Orange color
+    glm::vec3 sunsetColor2 = glm::vec3(1.0f, 0.0f, 1.0f); // Purple color
+
+    // Define the gradient direction (from bottom to top)
+    glm::vec3 gradientDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    // Get the window height
     int height = glutGet(GLUT_WINDOW_HEIGHT);
+    int width = glutGet(GLUT_WINDOW_WIDTH);
+
+  
+    
+
+    glBegin(GL_QUADS);
+    // Lower part of the sky (sunset)
+    glColor3fv(glm::value_ptr(sunsetColor1)); // Bottom color
+    glVertex3f(-width / 2.0f, -height / 2.0f, -50.0f);
+    glVertex3f(width / 2.0f, -height / 2.0f, -50.0f);
+    glColor3fv(glm::value_ptr(sunsetColor2)); // Top color
+    glVertex3f(width/ 2.0f, height / 2.0f, -50.0f);
+    glVertex3f(-width / 2.0f, height / 2.0f, -50.0f);
+    glEnd();
+  // Draw the sun at the center of the window
+    float sunSize = 2.0f; // Size of the sun
+    int numSegments = 50; // Number of segments to approximate the sun shape
+
+    glColor3f(1.0f, 0.4f, 0.0f); // Yellow color for the sun
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.0f, 0.0f, -1.0f); // Center of the sun
+    for (int i = 0; i <= numSegments; i++) {
+        float angle = static_cast<float>(i) / static_cast<float>(numSegments) * 2.0f * M_PI;
+        float x = sunSize * cos(angle);
+        float y = sunSize * sin(angle);
+        glVertex3f(x, y, -1.0f);
+    }
+    glEnd();
+
+    
+
+    // Set up the view and projection matrices
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    
     glm::mat4 projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
+
+    
 
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
     if (gamestart) {
-       
-        //Makes an instance of renderer object from renderer class and sends the scene(which has the model loaded) the window and projection matrix
-        /*renderer whitepawnt = renderer(scene, view, projection, 0.0f, 0.0f);
-        whitepawnt.Render()*/;
-        
-        
-
-       
+        updateTimer(); // Update the timer
+        renderTimer(); // Render the timer
+      
+       //renders the 8 pawns
         for (int i = 0; i < 8; i++) {
 			whitepawn[i].Render(view, projection);
 		}
