@@ -24,22 +24,18 @@ void Timer::setDuration(std::chrono::steady_clock::duration dur)
 }
 
 std::chrono::steady_clock::duration Timer::remaining() {
-	if (timerActive) {
-		return startTime - std::chrono::steady_clock::now();
+	if (timerActive && isAlive()) {
+		remain = startTime - std::chrono::steady_clock::now();
+		return remain;
 	}
 	else {
 		return std::chrono::steady_clock::duration::zero();
 	}
 }
 
-bool Timer::isActive() const{
-	return timerActive;
-}
 
-bool Timer::hasExpired(){
-	if (timerActive && remaining() <= std::chrono::steady_clock::duration::zero()) {
-		stop();
+bool Timer::isAlive() {
+	if (remainingTime() >= std::chrono::steady_clock::duration::zero())
 		return true;
-	}
-	return false;
+	else return false;
 }

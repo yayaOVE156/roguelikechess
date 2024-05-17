@@ -47,6 +47,9 @@ int windowHeight = 1000;
 
 
 
+// Convert duration to minutes and seconds (string)
+    
+
 //Mouse controlling function, I believe it will be removed due to the camera being fixed in the future
 
 void mouse_callback(int x, int y) {
@@ -82,6 +85,26 @@ void mouse_callback(int x, int y) {
     glutPostRedisplay();
 }
 
+// calculate width of text
+int getTextWidth(void* font, const std::string& text) {
+    int width = 0;
+    for (const char& c : text) {
+        width += glutBitmapWidth(font, c);
+    }
+    return width;
+}
+
+
+// Render the bitmap string (message)
+void renderText(float x, float y, void* font, const char* string) {
+    const char* c;
+    //position the text
+    glRasterPos2f(x, y);
+    for (c = string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+}
+
 //welcome text, all it does is just display a welcome message and instruction to start the game
 void welcometext() {
     using namespace std;
@@ -106,13 +129,8 @@ void welcometext() {
     int x = (windowWidth - textWidth) / 2; 
     int y = windowHeight / 2; 
 
-    // Position the text
-    glRasterPos2i(x, y);
-
     // Render the text
-    for (int i = 0; str[i] != '\0'; ++i) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str[i]);
-    };
+    renderText(x, y, GLUT_BITMAP_HELVETICA_12, str);
 }
 
 //intializing timers;
@@ -122,15 +140,14 @@ void intializeTimers(int num) {
 }
 
 void timerCallback(int value) {
-    printf("test");
-    if (currentTimer != nullptr && currentTimer->isActive() && !currentTimer->hasExpired()) {
+    if (currentTimer != nullptr && currentTimer->isAlive()) {
         glutPostRedisplay();
         glutTimerFunc(1000 / 60, timerCallback, 0);
     }   
 }
 
 void checkTimeOut() {
-    if (currentTimer != nullptr && !currentTimer->isActive() && currentTimer->hasExpired()) {
+    if (currentTimer != nullptr && !currentTimer->isAlive()) {
         "this team has lost";
     }
     std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
@@ -153,22 +170,21 @@ void timerText() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    if(teamColor == black)
+        glColor3f(0.0f, 0.0f, 0.0f);
+    else
+        glColor3f(1.0f, 1.0f, 1.0f);
 
-    glColor3f(0.0f, 0.0f, 0.0f);
 
     // Calculate text position
-    const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game";
-    int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_12, (const unsigned char*)str);
+    const std::string timerString = currentTimer->remainingTimeString();
+    const char* timeChar = timerString.c_str();
+    int textWidth = getTextWidth(GLUT_BITMAP_HELVETICA_18, timerString);
     int x = (windowWidth - textWidth) / 2;
-    int y = windowHeight / 2;
+    int y = 950;
 
-    // Position the text
-    glRasterPos2i(x, y);
-
-    // Render the text
-    for (int i = 0; str[i] != '\0'; ++i) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str[i]);
-    };
+    //Render Text
+    renderText(x, y, GLUT_BITMAP_HELVETICA_18, timeChar);
 }
 
 
@@ -207,6 +223,10 @@ void display() {
         renderer pawntest(scene, view, projection, 0.0f);
         //renders the model
         pawntest.Render();
+        //render the timer
+        timerText();
+        //callback for the timer
+            glutTimerFunc(1000 / 60, timerCallback, 0);
     }
     else {
         welcometext();
@@ -262,11 +282,6 @@ int main(int argc, char** argv) {
     
     // makes the 3d model have a depth feel to it
     glEnable(GL_DEPTH_TEST);
-
-   
-    // Start the timer callback for displaying updates
-    if(gamestart)
-        glutTimerFunc(1000 / 60, timerCallback, 0);
 
 
 

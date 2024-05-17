@@ -7,6 +7,9 @@
 #include <time.h>
 #include <chrono>
 #include <thread>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 class Timer {
 private:
@@ -14,6 +17,7 @@ private:
 	std::chrono::steady_clock::duration duration;
 	std::chrono::steady_clock::duration remain;
 	bool timerActive;
+	bool status;
 
 public:
 	Timer();
@@ -22,11 +26,19 @@ public:
 	void stop();
 	void setDuration(std::chrono::steady_clock::duration dur);
 	std::chrono::steady_clock::duration remaining();
-	std::chrono::steady_clock::duration remainingTime(){
+	std::chrono::steady_clock::duration remainingTime() {
 		return remain;
 	}
-	bool isActive() const;
-	bool hasExpired();
+	std::string remainingTimeString(){
+		auto seconds = std::chrono::duration_cast<std::chrono::seconds>(remain);
+		auto minutes = std::chrono::duration_cast<std::chrono::minutes>(seconds);
+
+		std::ostringstream oss;
+		oss << std::setw(2) << std::setfill('0') << minutes.count() << ":"
+			<< std::setw(2) << std::setfill('0') << seconds.count();
+		return oss.str();
+	}
+	bool isAlive();
 
 	
 };
