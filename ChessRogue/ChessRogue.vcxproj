@@ -136,10 +136,12 @@
     <ClCompile Include="keyboard.h" />
     <ClCompile Include="maincomments.cpp" />
     <ClCompile Include="render.cpp" />
+    <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chesspieces.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

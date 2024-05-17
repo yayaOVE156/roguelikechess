@@ -1,13 +1,13 @@
 #include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <iostream>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "keyboard.h"
+
+//var of type teams (equal white since they always start)
+teams teamColor;
+
+//vars for Timers
+ Timer blackTimer;
+ Timer whiteTimer;
+ extern Timer* currentTimer = nullptr;
 
 void processInput(unsigned char key, int x, int y) {
     if (key == 27) // ESC key
@@ -29,6 +29,30 @@ void processInput(unsigned char key, int x, int y) {
         break;
     case'n':
 		gamestart = true;
+        teamColor = white;
+        currentTimer = &whiteTimer;
+        currentTimer->start();
+        break;
+        
+    case 't':
+        currentTimer->stop();
+        if (teamColor == white) {
+            teamColor = black;
+            currentTimer = &blackTimer;
+            printf("current team is black");
+        }
+        else {
+            teamColor = white;
+            currentTimer = &whiteTimer;
+            printf("current team is white");
+        }
+        currentTimer->start(currentTimer->remainingTime());
+        break;
+    case 'r':
+        std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remainingTime()).count() << std::endl;
+    }
+    
+
 		break;
     case 'g':
         //increment the modelz position of the pawn

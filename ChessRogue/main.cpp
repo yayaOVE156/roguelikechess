@@ -1,18 +1,21 @@
 #include <GL/glew.h>
+#include <GL/glut.h>
 #include <GL/freeglut.h>
-#include <iostream>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string>
+#include <iomanip>
+#include <iostream>
+
+//custom header files
 #include "keyboard.h"
 #include "render.h"
-#include <string>
+#include "timer.h"
 #include "Chesspieces.h"
-
-
 
 
 //gamestart bool
@@ -29,6 +32,10 @@ const aiScene* scene;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+//timers
+int timeMinutes = 10;
+int timeSeconds = 10;
 
 // Camera movement speed
 float cameraSpeed = 0.05f;
@@ -83,6 +90,26 @@ void mouse_callback(int x, int y) {
     glutPostRedisplay();
 }
 
+// calculate width of text
+int getTextWidth(void* font, const std::string& text) {
+    int width = 0;
+    for (const char& c : text) {
+        width += glutBitmapWidth(font, c);
+    }
+    return width;
+}
+
+
+// Render the bitmap string (message)
+void renderText(float x, float y, void* font, const char* string) {
+    const char* c;
+    //position the text
+    glRasterPos2f(x, y);
+    for (c = string; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+}
+
 //welcome text, all it does is just display a welcome message and instruction to start the game
 void welcometext() {
     using namespace std;
@@ -107,14 +134,64 @@ void welcometext() {
     int x = (windowWidth - textWidth) / 2; 
     int y = windowHeight / 2; 
 
-    // Position the text
-    glRasterPos2i(x, y);
-
     // Render the text
-    for (int i = 0; str[i] != '\0'; ++i) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, str[i]);
-    };
+    renderText(x, y, GLUT_BITMAP_HELVETICA_12, str);
 }
+
+//intializing timers;
+void intializeTimers(int num) {
+    blackTimer.setDuration(std::chrono::seconds(num));
+    whiteTimer.setDuration(std::chrono::seconds(num));
+}
+
+void timerCallback(int value) {
+    if (currentTimer != nullptr && currentTimer->isAlive()) {
+        glutPostRedisplay();
+        glutTimerFunc(1000 / 60, timerCallback, 0);
+    }   
+}
+
+void checkTimeOut() {
+    if (currentTimer != nullptr && !currentTimer->isAlive()) {
+        "this team has lost";
+    }
+    std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
+    std::cout << "blackTimer: " << std::chrono::duration_cast<std::chrono::seconds>(blackTimer.remaining()).count() << std::endl;
+}
+
+
+//Timer Text
+void timerText() {
+    using namespace std;
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 1000, 0, 1000);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if(teamColor == black)
+        glColor3f(0.0f, 0.0f, 0.0f);
+    else
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+
+    // Calculate text position
+    const std::string timerString = currentTimer->remainingTimeString();
+    const char* timeChar = timerString.c_str();
+    int textWidth = getTextWidth(GLUT_BITMAP_HELVETICA_18, timerString);
+    int x = (windowWidth - textWidth) / 2;
+    int y = 950;
+
+    //Render Text
+    renderText(x, y, GLUT_BITMAP_HELVETICA_18, timeChar);
+}
+
 
 //void renderModel(const aiMesh* mesh) {
 //    glBegin(GL_TRIANGLES);
@@ -148,19 +225,21 @@ void display() {
 
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
-    if (gamestart) {
-       
-      
+    if (gamestart){
        //renders the 8 pawns
         for (int i = 0; i < 8; i++) {
 			whitepawn[i].Render(view, projection);
 		}
+        //render the timer
+        timerText();
+        //callback for the timer
+        glutTimerFunc(1000 / 60, timercallback, 0);
       
     }
     else {
         welcometext();
     }
-
+    checkTimeOut();
     glutSwapBuffers();
 }
 
@@ -181,6 +260,7 @@ int main(int argc, char** argv) {
     glutCreateWindow("Roguelike Chess");
     
 
+    intializeTimers(timeSeconds);
     //sets the g float pointer to point to one of the object's z position so that it gets changed in the keyboard.cpp;
     g=&whitepawn[1].modelZPosition;
     
@@ -194,14 +274,11 @@ int main(int argc, char** argv) {
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
-
-   
-  
-
-  
     
     // makes the 3d model have a depth feel to it
     glEnable(GL_DEPTH_TEST);
+
+
 
     glutMainLoop();
     return 0;
