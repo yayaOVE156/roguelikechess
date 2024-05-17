@@ -48,12 +48,12 @@ void InitializeChessboard(Chessboard& Board) {
 }
 
 void PrintChessboard(const Chessboard& Board) {
-    std::cout << "   A   B   C   D   E   F   G   H" << std::endl;
+    std::cout << "  A  B  C  D  E  F  G  H" << std::endl;
     for (int i = 0; i < BOARD_SIZE; ++i) {
-        std::cout << i + 1 << " ";
+        std::cout << 8-i << " ";
         for (int j = 0; j < BOARD_SIZE; ++j) {
             const ChessPiece& piece = Board[i][j];
-            if (piece.player == Player::Black) {
+            if (piece.player == Player::White) {
                 switch (piece.piece) {
                     case Piece::Pawn: std::cout << "♟ "; break;
                     case Piece::Knight: std::cout << "♞ "; break;
@@ -63,7 +63,7 @@ void PrintChessboard(const Chessboard& Board) {
                     case Piece::King: std::cout << "♚ "; break;
                     default: std::cout << "  ";
                 }
-            } else if (piece.player == Player::White) {
+            } else if (piece.player == Player::Black) {
                 switch (piece.piece) {
                     case Piece::Pawn: std::cout << "♙ "; break;
                     case Piece::Knight: std::cout << "♘ "; break;
