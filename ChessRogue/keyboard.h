@@ -20,5 +20,6 @@ extern glm::vec3 cameraFront;
 extern glm::vec3 cameraUp;
 extern float cameraSpeed;
 extern bool gamestart;
+extern float* g;
 
 void processInput(unsigned char key, int x, int y);

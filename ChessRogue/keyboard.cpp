@@ -53,6 +53,12 @@ void processInput(unsigned char key, int x, int y) {
     }
     
 
+		break;
+    case 'g':
+        //increment the modelz position of the pawn
+        (*g)++;
+        break;
+    }
 
     glutPostRedisplay();
 }

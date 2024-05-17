@@ -52,3 +52,8 @@ void renderModel(const aiMesh* mesh, float xOffset) {
         std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
         return -1;
     }*/
+
+
+
+
+

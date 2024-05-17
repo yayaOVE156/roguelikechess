@@ -130,28 +130,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ChessPieces\Base.cpp" />
-    <ClCompile Include="ChessPieces\Bishop.h" />
-    <ClCompile Include="ChessPieces\Bishop.cpp" />
-    <ClCompile Include="ChessPieces\King.h" />
-    <ClCompile Include="ChessPieces\King.cpp" />
-    <ClCompile Include="ChessPieces\Knight.h" />
-    <ClCompile Include="ChessPieces\Knight.cpp" />
-    <ClCompile Include="ChessPieces\Pawn .h" />
-    <ClCompile Include="ChessPieces\Queen.h" />
-    <ClCompile Include="ChessPieces\Rook.h" />
-    <ClCompile Include="ChessPieces\Rook.cpp" />
+    <ClCompile Include="Chesspieces.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="keyboard.h" />
     <ClCompile Include="maincomments.cpp" />
-    <ClCompile Include="ChessPieces\Pawn.cpp" />
-    <ClCompile Include="ChessPieces\Queen.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessPieces\Base.h" />
+    <ClInclude Include="Chesspieces.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="timer.h" />
   </ItemGroup>
