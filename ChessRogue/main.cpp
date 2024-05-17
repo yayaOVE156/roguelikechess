@@ -233,7 +233,7 @@ void display() {
         //render the timer
         timerText();
         //callback for the timer
-        glutTimerFunc(1000 / 60, timercallback, 0);
+        glutTimerFunc(1000 / 60, timerCallback, 0);
       
     }
     else {

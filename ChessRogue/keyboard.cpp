@@ -50,9 +50,6 @@ void processInput(unsigned char key, int x, int y) {
         break;
     case 'r':
         std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remainingTime()).count() << std::endl;
-    }
-    
-
 		break;
     case 'g':
         //increment the modelz position of the pawn
@@ -61,4 +58,4 @@ void processInput(unsigned char key, int x, int y) {
     }
 
     glutPostRedisplay();
-}
+ }
