@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
 
 //base piece class
@@ -20,19 +21,25 @@
      const extern aiScene* scene;
 
 class BasePiece {
-protected:
-    std::string modelPath;
-    
 
+private:
+    std::vector<float> vertices;
+    bool loaded = false;
+    GLuint VBO, VAO;
+    void SetupMesh(const aiMesh* mesh);
 
 public:
+    std::string modelPath;
     float modelXPosition;
     float modelZPosition;
     BasePiece(float modelXPosition, float modelZPosition);
-    void Load(const glm::mat4& view, const glm::mat4& projection);
-    void RenderModel(const aiMesh* mesh);
-    const static aiScene* getScene() {
-        return scene;
+    void LoadModel();
+    void RenderModel(const glm::mat4& view, const glm::mat4& projection);
+    bool checkLoaded() {
+        return loaded;
+    };
+    std::string checkModelPath() {
+        return modelPath;
     }
     
 };

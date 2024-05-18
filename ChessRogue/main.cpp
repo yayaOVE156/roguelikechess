@@ -28,6 +28,8 @@ glm::mat4 projection;
 
 //load scene
 const extern aiScene* scene;
+bool loaded = false;
+bool loadedOnce = false;
 
 // Camera parameters
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
@@ -227,16 +229,27 @@ void display() {
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
     if (gamestart){
+        if (!loaded) {
+                //renders the 8 pawns
+                for (int i = 0; i < 8; i++) {
+                    whitepawn[i].LoadModel();
+                    std::cout << "loaded" << std::endl;
+                }
+                loaded = true;
+                std::cout << loaded << std::endl;
+        }
         //render the timer
         timerText();
         //callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
         currentTimer->countDown();
         //render the model
-        /*for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
-            const aiMesh* mesh = scene->mMeshes[i];
-            whitepawn[i].RenderModel(mesh);
-        }*/
+        if (loaded && !loadedOnce) {
+            for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
+                whitepawn[i].RenderModel(view, projection);
+            }
+            loadedOnce = true;
+        }
       
     }
     else {
@@ -265,12 +278,6 @@ int main(int argc, char** argv) {
 
     intializeTimers(timeSeconds);
 
-    if(gamestart)
-        //renders the 8 pawns
-        for (int i = 0; i < 8; i++) {
-            whitepawn[i].Load(view, projection);
-            std::cout << "loaded" << std::endl;
-        }
 
     //sets the g float pointer to point to one of the object's z position so that it gets changed in the keyboard.cpp;
     g=&whitepawn[1].modelZPosition;
@@ -282,6 +289,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutPassiveMotionFunc(mouse_callback);
+   
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
