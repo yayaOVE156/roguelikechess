@@ -226,14 +226,15 @@ void display() {
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
     if (gamestart){
-       //renders the 8 pawns
-        for (int i = 0; i < 8; i++) {
-			whitepawn[i].Render(view, projection);
-		}
         //render the timer
         timerText();
         //callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
+       //renders the 8 pawns
+        for (int i = 0; i < 8; i++) {
+			whitepawn[i].Render(view, projection);
+		}
+     
       
     }
     else {
