@@ -23,9 +23,14 @@ void Timer::setDuration(std::chrono::steady_clock::duration dur)
 	remain = dur;
 }
 
+void Timer::countDown() {
+	if (isAlive()) {
+		remain = startTime - std::chrono::steady_clock::now();
+	}
+}
+
 std::chrono::steady_clock::duration Timer::remaining() {
 	if (timerActive && isAlive()) {
-		remain = startTime - std::chrono::steady_clock::now();
 		return remain;
 	}
 	else {

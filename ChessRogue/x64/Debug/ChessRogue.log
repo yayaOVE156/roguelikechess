@@ -1,1 +1,14 @@
-﻿  ChessRogue.vcxproj -> D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe
+﻿  keyboard.cpp
+  keyboard.h
+  main.cpp
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(63,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(64,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(70,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(71,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(139,19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(139,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(193,19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\projects colleg\rouglikeChess\roguelikechess\ChessRogue\main.cpp(193,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+x64\Debug\keyboard.obj : warning LNK4042: object specified more than once; extras ignored
+  ChessRogue.vcxproj -> D:\projects colleg\rouglikeChess\roguelikechess\x64\Debug\ChessRogue.exe

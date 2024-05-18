@@ -10,13 +10,15 @@
 #include "Chesspieces.h"
 #include "render.h"
 
+const aiScene* scene;
+
 BasePiece::BasePiece(float modelXPosition, float modelZPosition)
     :modelXPosition(modelXPosition), modelZPosition(modelZPosition) {}
 
 
 // Render function for the base piece class
 
-void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
+void BasePiece::Load(const glm::mat4& view, const glm::mat4& projection) {
     //maybe inefficient as it loads the model everytime the Render() function is called
     // a possible soltuion is to load the model in the constructor using a different pointer that points to the start address of the model
     // then everytime the Render() is called a different pointer points to the start address of the model pointer
@@ -29,10 +31,6 @@ void BasePiece::Render(const glm::mat4& view, const glm::mat4& projection) {
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(glm::value_ptr(projection));
     
-    for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
-        const aiMesh* mesh = scene->mMeshes[i];
-        RenderModel(mesh);
-    }
 }
 //uses the mesh to render it on the window
 void BasePiece::RenderModel(const aiMesh* mesh) {
