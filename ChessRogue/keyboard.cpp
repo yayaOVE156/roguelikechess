@@ -50,7 +50,12 @@ void processInput(unsigned char key, int x, int y) {
         break;
     case 'r':
         std::cout << "remaining time: " << std::chrono::duration_cast<std::chrono::seconds>(currentTimer->remainingTime()).count() << std::endl;
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 6a75bed5a28818e147e7df9a684f4bd287def574
 		break;
+
     case 'g':
         //increment the modelz position of the pawn
         (*g)++;
