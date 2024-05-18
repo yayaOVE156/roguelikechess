@@ -1,2 +1,7 @@
+<<<<<<< HEAD
+PlatformToolSet=v143:VCToolArchitecture=Native64Bit:VCToolsVersion=14.35.32215:TargetPlatformVersion=10.0.22000.0:
+Debug|x64|D:\projects colleg\rouglikeChess\roguelikechess\|
+=======
 PlatformToolSet=v143:VCToolArchitecture=Native64Bit:VCToolsVersion=14.39.33519:TargetPlatformVersion=10.0.22621.0:VcpkgTriplet=x64-windows:
 Debug|x64|D:\Chrome Downloads\ChessRogue\roguelikechess\|
+>>>>>>> 6a75bed5a28818e147e7df9a684f4bd287def574

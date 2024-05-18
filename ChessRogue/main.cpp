@@ -21,12 +21,13 @@
 //gamestart bool
 bool gamestart = false;
 
+//camera view vars
+glm::mat4 view;
+glm::mat4 projection;
 
 
-// Model pointers white
-const aiScene* scene;
-
-
+//load scene
+const extern aiScene* scene;
 
 // Camera parameters
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
@@ -155,8 +156,8 @@ void checkTimeOut() {
     if (currentTimer != nullptr && !currentTimer->isAlive()) {
         "this team has lost";
     }
-    std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
-    std::cout << "blackTimer: " << std::chrono::duration_cast<std::chrono::seconds>(blackTimer.remaining()).count() << std::endl;
+   /* std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
+    std::cout << "blackTimer: " << std::chrono::duration_cast<std::chrono::seconds>(blackTimer.remaining()).count() << std::endl;*/
 }
 
 
@@ -218,10 +219,10 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // sets the camera view
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
-    glm::mat4 projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
     // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
     //When the game starts it begins to render the models
@@ -230,11 +231,12 @@ void display() {
         timerText();
         //callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
-       //renders the 8 pawns
-        for (int i = 0; i < 8; i++) {
-			whitepawn[i].Render(view, projection);
-		}
-     
+        currentTimer->countDown();
+        //render the model
+        /*for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
+            const aiMesh* mesh = scene->mMeshes[i];
+            whitepawn[i].RenderModel(mesh);
+        }*/
       
     }
     else {
@@ -262,6 +264,14 @@ int main(int argc, char** argv) {
     
 
     intializeTimers(timeSeconds);
+
+    if(gamestart)
+        //renders the 8 pawns
+        for (int i = 0; i < 8; i++) {
+            whitepawn[i].Load(view, projection);
+            std::cout << "loaded" << std::endl;
+        }
+
     //sets the g float pointer to point to one of the object's z position so that it gets changed in the keyboard.cpp;
     g=&whitepawn[1].modelZPosition;
     

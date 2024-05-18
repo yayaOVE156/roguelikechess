@@ -17,20 +17,23 @@
 // it is the base foundation for the rest of the pieces
 // it has a model path, a scene, and a render model function
 
+     const extern aiScene* scene;
 
 class BasePiece {
 protected:
     std::string modelPath;
-    const aiScene* scene;
     
 
-    void RenderModel(const aiMesh* mesh);
 
 public:
     float modelXPosition;
     float modelZPosition;
     BasePiece(float modelXPosition, float modelZPosition);
-    void Render(const glm::mat4& view, const glm::mat4& projection);
+    void Load(const glm::mat4& view, const glm::mat4& projection);
+    void RenderModel(const aiMesh* mesh);
+    const static aiScene* getScene() {
+        return scene;
+    }
     
 };
 

@@ -25,6 +25,7 @@ public:
 	void start(std::chrono::steady_clock::duration remain);
 	void stop();
 	void setDuration(std::chrono::steady_clock::duration dur);
+	void countDown();
 	std::chrono::steady_clock::duration remaining();
 	std::chrono::steady_clock::duration remainingTime() {
 		return remain;
