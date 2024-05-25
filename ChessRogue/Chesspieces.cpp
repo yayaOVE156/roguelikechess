@@ -30,16 +30,22 @@ void BasePiece::Load(const glm::mat4& view, const glm::mat4& projection) {
     glLoadMatrixf(glm::value_ptr(view));
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(glm::value_ptr(projection));
+
+    for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
+        const aiMesh* mesh = scene->mMeshes[i];
+        RenderModel(mesh);
+    }
     
 }
 //uses the mesh to render it on the window
 void BasePiece::RenderModel(const aiMesh* mesh) {
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_TRIANGLES);
     for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
         const aiFace& face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             unsigned int index = face.mIndices[j];
-            glVertex3f(0.5f*mesh->mVertices[index].x + modelXPosition, 0.5f * mesh->mVertices[index].y, 0.5f * mesh->mVertices[index].z + modelZPosition);
+            glVertex3f(0.5f * mesh->mVertices[index].x + modelXPosition, 0.5f * mesh->mVertices[index].y, 0.5f * mesh->mVertices[index].z + modelZPosition);
         }
     }
     glEnd();

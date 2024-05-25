@@ -193,61 +193,155 @@ void timerText() {
     renderText(x, y, GLUT_BITMAP_HELVETICA_18, timeChar);
 }
 
+void board() {
+    float size = 1.0f;
+    bool color = false;
 
-//void renderModel(const aiMesh* mesh) {
-//    glBegin(GL_TRIANGLES);
-//    for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
-//        const aiFace& face = mesh->mFaces[i];
-//        for (unsigned int j = 0; j < face.mNumIndices; ++j) {
-//            unsigned int index = face.mIndices[j];
-//            glVertex3fv(reinterpret_cast<const GLfloat*>(&mesh->mVertices[index]));
-//        }
-//    }
-//    glEnd();
-//}
+    for (int x = -4; x < 4; x++) {
+        for (int z = -4; z < 4; z++) {
+            if (color)
+                glColor3f(1.0f, 1.0f, 1.0f); // White
+            else
+                glColor3f(0.0f, 0.0f, 0.0f); // Black
+
+            glBegin(GL_QUADS);
+            // Top
+            glVertex3f(x * size, 0, z * size);
+            glVertex3f((x + 1) * size, 0, z * size);
+            glVertex3f((x + 1) * size, 0, (z + 1) * size);
+            glVertex3f(x * size, 0, (z + 1) * size);
+            glEnd();
+
+            // Color swap to the front
+            color = !color;
+        }
+        // Color swap to the side
+        color = !color;
+    }
+
+    // Draw the frame around the chessboard
+    glColor3d(0.62, 0.35, 0.24);
+    glBegin(GL_QUADS);
+    // Top View Frames
+    // Left frame
+    glVertex3f(-6, 0, -6);
+    glVertex3f(-4, 0, -6);
+    glVertex3f(-4, 0, 6);
+    glVertex3f(-6, 0, 6);
+
+    // Back frame
+    glVertex3f(-4, 0, 6);
+    glVertex3f(-4, 0, 4);
+    glVertex3f(6, 0, 4);
+    glVertex3f(6, 0, 6);
+
+    // Right frame
+    glVertex3f(4, 0, -6);
+    glVertex3f(4, 0, 6);
+    glVertex3f(6, 0, 6);
+    glVertex3f(6, 0, -6);
+
+    // Forward frame
+    glVertex3f(-4, 0, -4);
+    glVertex3f(-4, 0, -6);
+    glVertex3f(6, 0, -6);
+    glVertex3f(6, 0, -4);
+
+    // Side View Frames
+    // Left frame
+    glVertex3f(-6, 0, -6);
+    glVertex3f(-6, -1, -6);
+    glVertex3f(-6, -1, 6);
+    glVertex3f(-6, 0, 6);
+
+    // Back frame
+    glVertex3f(-6, 0, 6);
+    glVertex3f(-6, -1, 6);
+    glVertex3f(6, -1, 6);
+    glVertex3f(6, 0, 6);
+
+    // Right frame
+    glVertex3f(6, 0, -6);
+    glVertex3f(6, -1, -6);
+    glVertex3f(6, -1, 6);
+    glVertex3f(6, 0, 6);
+
+    // Forward frame
+    glVertex3f(-4, 0, -6);
+    glVertex3f(-4, -1, -6);
+    glVertex3f(6, -1, -6);
+    glVertex3f(6, 0, -6);
+
+    // Bottom view
+    glVertex3f(-6, -1, -6);
+    glVertex3f(6, -1, -6);
+    glVertex3f(6, -1, 6);
+    glVertex3f(-6, -1, 6);
+
+    glEnd();
+}
+
+
 
 
 //constructor of pawn takes in parameters of x and z positions
 // array that makes 8 of them
 
 Pawn whitepawn[8] = { Pawn(0.0f, 0.0f), Pawn(4.0f, 0.0f), Pawn(8.0f, 0.0f), Pawn(12.0f, 0.0f), Pawn(16.0f, 0.0f), Pawn(20.0f, 0.0f), Pawn(24.0f, 0.0f), Pawn(28.0f, 0.0f) };
+
+
+
+
+
 //Display function
 
 void display() {
-    //sets the color for the background
+    // Set the background color and clear buffers
     glClearColor(0.2f, 0.6f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // sets the camera view
+    // Set the camera view
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
     projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
-    // checks if welcome text is displayed or not, if it is not displayed then the player has pressed N to start the game
-    //When the game starts it begins to render the models
-    if (gamestart){
-        //render the timer
+    // Render the chessboard
+    board();
+
+    // If the game has started, render the game elements
+    if (gamestart) {
+        // Render the timer
         timerText();
-        //callback for the timer
+
+        // Callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
         currentTimer->countDown();
-        //render the model
-        /*for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
-            const aiMesh* mesh = scene->mMeshes[i];
-            whitepawn[i].RenderModel(mesh);
-        }*/
-      
+
+        // Render the chess pieces
+        for (int i = 0; i < 8; i++) {
+            whitepawn[i].Load(view, projection);
+        }
     }
     else {
+        // Display welcome text
         welcometext();
     }
-    //checkTimeOut();
+
+    // Swap buffers
     glutSwapBuffers();
 }
 
+
 void reshape(int w, int h) { //Not sure what this does but it has to do with camera settings
+    if (h == 0) h = 1; // Prevent divide by zero
+    float aspect = (float)w / (float)h;
+
     glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45, aspect, 0.1f, 100.0f);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -262,7 +356,8 @@ int main(int argc, char** argv) {
     glutInitWindowSize(windowWidth, windowHeight);
     glutCreateWindow("Roguelike Chess");
     
-
+    
+    
     intializeTimers(timeSeconds);
 
     if(gamestart)
@@ -285,11 +380,14 @@ int main(int argc, char** argv) {
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
-    
+        
+
+    glClearDepth(1.0f);
     // makes the 3d model have a depth feel to it
     glEnable(GL_DEPTH_TEST);
-
-
+    glDepthFunc(GL_LEQUAL);
+    glShadeModel(GL_SMOOTH);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
     glutMainLoop();
     return 0;

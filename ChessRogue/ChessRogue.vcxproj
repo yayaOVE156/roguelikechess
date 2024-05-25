@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="Chesspieces.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="keyboard.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Chesspieces.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="timer.h" />
