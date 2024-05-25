@@ -1,12 +1,9 @@
 ﻿  main.cpp
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(56,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(57,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(63,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(64,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(59,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(60,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(66,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(67,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(226,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(245,9): error C2660: 'updateTimer': function does not take 0 arguments
-  D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(147,6):
-  see declaration of 'updateTimer'
-  D:\Chrome Downloads\ChessRogue\roguelikechess\ChessRogue\main.cpp(245,9):
-  while trying to match the argument list '()'
-  
+  ChessRogue.vcxproj -> D:\Chrome Downloads\ChessRogue\roguelikechess\x64\Debug\ChessRogue.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

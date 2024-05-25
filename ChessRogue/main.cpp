@@ -16,6 +16,9 @@
 #include <chrono>
 
 
+#include "ChessGame.h"
+
+
 //gamestart bool
 bool gamestart = false;
 
@@ -274,6 +277,9 @@ void reshape(int w, int h) { //Not sure what this does but it has to do with cam
 
 
 int main(int argc, char** argv) {
+
+
+    //StartChessGame();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
