@@ -1,3 +1,6 @@
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <iostream>
@@ -23,3 +26,6 @@ extern bool gamestart;
 extern float* g;
 
 void processInput(unsigned char key, int x, int y);
+
+
+#endif // KEYBOARD_H

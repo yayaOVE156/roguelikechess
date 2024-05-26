@@ -10,6 +10,9 @@
 #include <string>
 #include <iomanip>
 #include <iostream>
+#include <ctime>
+#include <cmath>
+#include <cstdlib>
 
 //custom header files
 #include "keyboard.h"
@@ -29,10 +32,15 @@ glm::mat4 projection;
 //load scene
 const extern aiScene* scene;
 
-// Camera parameters
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 10.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+ //Camera parameters for white team
+glm::vec3 cameraPos = glm::vec3(8.0f, 20.0f, 20.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, -0.5f, -0.7f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+//camera parameters for black team
+//glm::vec3 cameraPos = glm::vec3(8.0f, 20.0f, -25.0f);
+//glm::vec3 cameraFront = glm::vec3(0.0f, -0.5f, 0.7f);
+//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 //timers
 int timeMinutes = 10;
@@ -58,38 +66,38 @@ float* g;
 
 //Mouse controlling function, I believe it will be removed due to the camera being fixed in the future
 
-void mouse_callback(int x, int y) {
-    if (firstMouse) {
-        lastX = x;
-        lastY = y;
-        firstMouse = false;
-    }
-
-    float xoffset = x - lastX;
-    float yoffset = lastY - y; // reversed since y-coordinates range from bottom to top
-    lastX = x;
-    lastY = y;
-
-    float sensitivity = 0.05f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    // Make sure that when pitch is out of bounds, screen doesn't get flipped
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
-    glutPostRedisplay();
-}
+//void mouse_callback(int x, int y) {
+//    if (firstMouse) {
+//        lastX = x;
+//        lastY = y;
+//        firstMouse = false;
+//    }
+//
+//    float xoffset = x - lastX;
+//    float yoffset = lastY - y; // reversed since y-coordinates range from bottom to top
+//    lastX = x;
+//    lastY = y;
+//
+//    float sensitivity = 0.5f;
+//    xoffset *= sensitivity;
+//    yoffset *= sensitivity;
+//
+//    yaw += xoffset;
+//    pitch += yoffset;
+//
+//    // Make sure that when pitch is out of bounds, screen doesn't get flipped
+//    if (pitch > 89.0f)
+//        pitch = 89.0f;
+//    if (pitch < -89.0f)
+//        pitch = -89.0f;
+//
+//    glm::vec3 front;
+//    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    front.y = sin(glm::radians(pitch));
+//    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    cameraFront = glm::normalize(front);
+//    glutPostRedisplay();
+//}
 
 // calculate width of text
 int getTextWidth(void* font, const std::string& text) {
@@ -141,8 +149,8 @@ void welcometext() {
 
 //intializing timers;
 void intializeTimers(int num) {
-    blackTimer.setDuration(std::chrono::seconds(num));
-    whiteTimer.setDuration(std::chrono::seconds(num));
+    blackTimer.setDuration(std::chrono::minutes(num));
+    whiteTimer.setDuration(std::chrono::minutes(num));
 }
 
 void timerCallback(int value) {
@@ -156,7 +164,7 @@ void checkTimeOut() {
     if (currentTimer != nullptr && !currentTimer->isAlive()) {
         "this team has lost";
     }
-   /* std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
+ /*   std::cout << "whiteTimer: " << std::chrono::duration_cast<std::chrono::seconds>(whiteTimer.remaining()).count() << std::endl;
     std::cout << "blackTimer: " << std::chrono::duration_cast<std::chrono::seconds>(blackTimer.remaining()).count() << std::endl;*/
 }
 
@@ -193,16 +201,26 @@ void timerText() {
     renderText(x, y, GLUT_BITMAP_HELVETICA_18, timeChar);
 }
 
-void board() {
-    float size = 1.0f;
-    bool color = false;
 
-    for (int x = -4; x < 4; x++) {
-        for (int z = -4; z < 4; z++) {
+void background() {
+
+}
+
+
+
+
+void board() {
+    float size = 2.0f;
+    bool color = false;
+    int xy = 4;
+    int zy = -2;
+
+    for (int x = 0; x < 8; x++) {
+        for (int z = -6; z < 2; z++) {
             if (color)
-                glColor3f(1.0f, 1.0f, 1.0f); // White
+                glColor3f(0.8f, 0.8f, 0.8f); // White
             else
-                glColor3f(0.0f, 0.0f, 0.0f); // Black
+                glColor3f(0.2f, 0.2f, 0.2f); // Black
 
             glBegin(GL_QUADS);
             // Top
@@ -219,64 +237,63 @@ void board() {
         color = !color;
     }
 
-    // Draw the frame around the chessboard
-    glColor3d(0.62, 0.35, 0.24);
+    glColor3f(0.62, 0.35, 0.24);
     glBegin(GL_QUADS);
     // Top View Frames
     // Left frame
-    glVertex3f(-6, 0, -6);
-    glVertex3f(-4, 0, -6);
-    glVertex3f(-4, 0, 6);
-    glVertex3f(-6, 0, 6);
+    glVertex3f((-6 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((-4 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((-4 + xy) * 2, -1, (6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -1, (6 + zy) * 2);
 
     // Back frame
-    glVertex3f(-4, 0, 6);
-    glVertex3f(-4, 0, 4);
-    glVertex3f(6, 0, 4);
-    glVertex3f(6, 0, 6);
+    glVertex3f((-4 + xy) * 2, -1, (6 + zy) * 2);
+    glVertex3f((-4 + xy) * 2, -1, (4 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (4 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (6 + zy) * 2);
 
     // Right frame
-    glVertex3f(4, 0, -6);
-    glVertex3f(4, 0, 6);
-    glVertex3f(6, 0, 6);
-    glVertex3f(6, 0, -6);
+    glVertex3f((4 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((4 + xy) * 2, -1, (6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (-6 + zy) * 2);
 
     // Forward frame
-    glVertex3f(-4, 0, -4);
-    glVertex3f(-4, 0, -6);
-    glVertex3f(6, 0, -6);
-    glVertex3f(6, 0, -4);
+    glVertex3f((-4 + xy) * 2, -1, (-4 + zy) * 2);
+    glVertex3f((-4 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (-4 + zy) * 2);
 
     // Side View Frames
     // Left frame
-    glVertex3f(-6, 0, -6);
-    glVertex3f(-6, -1, -6);
-    glVertex3f(-6, -1, 6);
-    glVertex3f(-6, 0, 6);
+    glVertex3f((-6 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -2, (6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -1, (6 + zy) * 2);
 
     // Back frame
-    glVertex3f(-6, 0, 6);
-    glVertex3f(-6, -1, 6);
-    glVertex3f(6, -1, 6);
-    glVertex3f(6, 0, 6);
+    glVertex3f((-6 + xy) * 2, -1, (6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -2, (6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (6 + zy) * 2);
 
     // Right frame
-    glVertex3f(6, 0, -6);
-    glVertex3f(6, -1, -6);
-    glVertex3f(6, -1, 6);
-    glVertex3f(6, 0, 6);
+    glVertex3f((6 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (6 + zy) * 2);
 
     // Forward frame
-    glVertex3f(-4, 0, -6);
-    glVertex3f(-4, -1, -6);
-    glVertex3f(6, -1, -6);
-    glVertex3f(6, 0, -6);
+    glVertex3f((-4 + xy) * 2, -1, (-6 + zy) * 2);
+    glVertex3f((-4 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -1, (-6 + zy) * 2);
 
     // Bottom view
-    glVertex3f(-6, -1, -6);
-    glVertex3f(6, -1, -6);
-    glVertex3f(6, -1, 6);
-    glVertex3f(-6, -1, 6);
+    glVertex3f((-6 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (-6 + zy) * 2);
+    glVertex3f((6 + xy) * 2, -2, (6 + zy) * 2);
+    glVertex3f((-6 + xy) * 2, -2, (6 + zy) * 2);
 
     glEnd();
 }
@@ -287,11 +304,22 @@ void board() {
 //constructor of pawn takes in parameters of x and z positions
 // array that makes 8 of them
 
-Pawn whitepawn[8] = { Pawn(0.0f, 0.0f), Pawn(4.0f, 0.0f), Pawn(8.0f, 0.0f), Pawn(12.0f, 0.0f), Pawn(16.0f, 0.0f), Pawn(20.0f, 0.0f), Pawn(24.0f, 0.0f), Pawn(28.0f, 0.0f) };
+Pawn whitepawn[8] = { Pawn(1.0f, 1.0f,0), Pawn(3.0f, 1.0f,0), Pawn(5.0f, 1.0f,0), Pawn(7.0f, 1.0f,0), Pawn(9.0f, 1.0f,0), Pawn(11.0f, 1.0f,0), Pawn(13.0f, 1.0f,0), Pawn(15.0f, 1.0f,0) };
+Queen whitequeen(7.0f, 3.0f, 0);
+Rook whiterook[2] = { Rook(1.0f, 3.0f,0), Rook(15.0f, 3.0f,0) };
+Knight whiteknight[2] = { Knight(3.0f, 3.0f,0), Knight(13.0f, 3.0f,0) };
+King whiteking(9.0f, 3.0f, 0);
+Bishop whitebishop[2] = { Bishop(5.0f, 3.0f,0), Bishop(11.0f, 3.0f,0) };
 
 
 
 
+Rook blackrook[2] = { Rook(1.0f, -11.0f,1), Rook(15.0f, -11.0f,1) };
+Knight blackknight[2] = { Knight(3.0f, -11.0f,1), Knight(13.0f, -11.0f,1) };
+King blackking(9.0f, -11.0f,1);
+Pawn blackpawn[8] = { Pawn(1.0f, -9.0f,1), Pawn(3.0f, -9.0f,1), Pawn(5.0f, -9.0f,1), Pawn(7.0f, -9.0f,1), Pawn(9.0f, -9.0f,1), Pawn(11.0f, -9.0f,1), Pawn(13.0f, -9.0f,1), Pawn(15.0f, -9.0f,1) };
+Queen blackqueen(7.0f, -11.0f, 1);
+Bishop blackbishop[2] = { Bishop(5.0f, -11.0f,1), Bishop(11.0f, -11.0f,1) };
 
 //Display function
 
@@ -307,27 +335,43 @@ void display() {
     projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
     // Render the chessboard
-    board();
+    //board();
 
     // If the game has started, render the game elements
     if (gamestart) {
         // Render the timer
         timerText();
-
+        std:: cout <<cameraFront.x << " " << cameraFront.y << " " << cameraFront.z << std::endl;
         // Callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
         currentTimer->countDown();
 
+       
+
         // Render the chess pieces
         for (int i = 0; i < 8; i++) {
             whitepawn[i].Load(view, projection);
+            blackpawn[i].Load(view, projection);
         }
+        for (int i = 0; i < 2; i++) {
+			whiterook[i].Load(view, projection);
+			blackrook[i].Load(view, projection);
+            whiteknight[i].Load(view, projection);
+            blackknight[i].Load(view, projection);
+            whitebishop[i].Load(view, projection);
+            blackbishop[i].Load(view, projection);
+		}
+        whitequeen.Load(view, projection);
+        blackqueen.Load(view, projection);
+        whiteking.Load(view, projection);
+        blackking.Load(view, projection);
+       
     }
     else {
         // Display welcome text
         welcometext();
     }
-
+    board();
     // Swap buffers
     glutSwapBuffers();
 }
@@ -376,7 +420,7 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutPassiveMotionFunc(mouse_callback);
+    //glutPassiveMotionFunc(mouse_callback);
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);

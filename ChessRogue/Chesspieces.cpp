@@ -12,8 +12,8 @@
 
 const aiScene* scene;
 
-BasePiece::BasePiece(float modelXPosition, float modelZPosition)
-    :modelXPosition(modelXPosition), modelZPosition(modelZPosition) {}
+BasePiece::BasePiece(float modelXPosition, float modelZPosition,bool black)
+    :modelXPosition(modelXPosition), modelZPosition(modelZPosition),black(black) {}
 
 
 // Render function for the base piece class
@@ -39,20 +39,24 @@ void BasePiece::Load(const glm::mat4& view, const glm::mat4& projection) {
 }
 //uses the mesh to render it on the window
 void BasePiece::RenderModel(const aiMesh* mesh) {
-    glColor3f(1.0f, 1.0f, 1.0f);
+    if(black)
+		glColor3f(0.0f, 0.0f, 0.0f);
+    else {
+        glColor3f(1.0f, 1.0f, 1.0f);
+    }
     glBegin(GL_TRIANGLES);
     for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
         const aiFace& face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             unsigned int index = face.mIndices[j];
-            glVertex3f(0.5f * mesh->mVertices[index].x + modelXPosition, 0.5f * mesh->mVertices[index].y, 0.5f * mesh->mVertices[index].z + modelZPosition);
+            glVertex3f(0.5f * mesh->mVertices[index].x + modelXPosition, 0.5f * mesh->mVertices[index].y+1.0, 0.5f * mesh->mVertices[index].z + modelZPosition);
         }
     }
     glEnd();
 }
 
-Pawn::Pawn( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+Pawn::Pawn( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/pawn.obj";
     
 }
@@ -61,37 +65,32 @@ Pawn::Pawn( float modelXPosition, float modelZPosition)
 // testing purposes
 
 
-Rook::Rook( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+Rook::Rook( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/rook.obj";
-    Assimp::Importer importer;
-    scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+   
 }
 
-Knight::Knight( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+Knight::Knight( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/knight.obj";
-    Assimp::Importer importer;
-    scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+   
 }
 
-Bishop::Bishop( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+Bishop::Bishop( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/bishop.obj";
-    Assimp::Importer importer;
-    scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+   
 }
 
-Queen::Queen( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+Queen::Queen( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/queen.obj";
-    Assimp::Importer importer;
-    scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+    
 }
 
-King::King( float modelXPosition, float modelZPosition)
-    : BasePiece( modelXPosition, modelZPosition) {
+King::King( float modelXPosition, float modelZPosition, bool black)
+    : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/king.obj";
-    Assimp::Importer importer;
-    scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
+    
 }

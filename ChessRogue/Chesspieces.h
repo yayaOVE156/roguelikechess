@@ -28,7 +28,8 @@ protected:
 public:
     float modelXPosition;
     float modelZPosition;
-    BasePiece(float modelXPosition, float modelZPosition);
+    bool black = false;
+    BasePiece(float modelXPosition, float modelZPosition, bool black);
     void Load(const glm::mat4& view, const glm::mat4& projection);
     void RenderModel(const aiMesh* mesh);
     const static aiScene* getScene() {
@@ -39,33 +40,33 @@ public:
 
 class Pawn : public BasePiece {
 public:
-    Pawn(float modelXPosition, float modelZPosition);
+    Pawn(float modelXPosition, float modelZPosition,bool black);
 
 };
 
 class Rook : public BasePiece {
 public:
-    Rook( float modelXPosition, float modelZPosition);
+    Rook( float modelXPosition, float modelZPosition, bool black);
 };
 
 class Knight : public BasePiece {
 public:
-    Knight( float modelXPosition, float modelZPosition);
+    Knight( float modelXPosition, float modelZPosition, bool black);
 };
 
 class Bishop : public BasePiece {
 public:
-    Bishop( float modelXPosition, float modelZPosition);
+    Bishop( float modelXPosition, float modelZPosition, bool black);
 };
 
 class Queen : public BasePiece {
 public:
-    Queen( float modelXPosition, float modelZPosition);
+    Queen( float modelXPosition, float modelZPosition, bool black);
 };
 
 class King : public BasePiece {
 public:
-    King( float modelXPosition, float modelZPosition);
+    King( float modelXPosition, float modelZPosition, bool black);
 };
 
 #endif // CHESSPIECES_H
