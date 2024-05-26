@@ -34,7 +34,11 @@ public:
 		auto seconds = std::chrono::duration_cast<std::chrono::seconds>(remain);
 		auto minutes = std::chrono::duration_cast<std::chrono::minutes>(seconds);
 
+
+
 		std::ostringstream oss;
+		seconds -= std::chrono::duration_cast<std::chrono::seconds>(minutes);
+
 		oss << std::setw(2) << std::setfill('0') << minutes.count() << ":"
 			<< std::setw(2) << std::setfill('0') << seconds.count();
 		return oss.str();

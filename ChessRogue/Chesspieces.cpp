@@ -13,7 +13,7 @@
 const aiScene* scene;
 
 BasePiece::BasePiece(float modelXPosition, float modelZPosition,bool black)
-    :modelXPosition(modelXPosition), modelZPosition(modelZPosition),black(black) {}
+    :position(modelXPosition,modelZPosition), black(black) {}
 
 
 // Render function for the base piece class
@@ -49,7 +49,7 @@ void BasePiece::RenderModel(const aiMesh* mesh) {
         const aiFace& face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             unsigned int index = face.mIndices[j];
-            glVertex3f(0.5f * mesh->mVertices[index].x + modelXPosition, 0.5f * mesh->mVertices[index].y+1.0, 0.5f * mesh->mVertices[index].z + modelZPosition);
+            glVertex3f(0.5f * mesh->mVertices[index].x + position.x, 0.5f * mesh->mVertices[index].y+1.0, 0.5f * mesh->mVertices[index].z + position.z);
         }
     }
     glEnd();
@@ -58,7 +58,7 @@ void BasePiece::RenderModel(const aiMesh* mesh) {
 Pawn::Pawn( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/pawn.obj";
-    
+    weight = 1;
 }
 
 // rest of the pieces except they load the model first, but they are not used as the pawn is used for
@@ -68,29 +68,29 @@ Pawn::Pawn( float modelXPosition, float modelZPosition, bool black)
 Rook::Rook( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/rook.obj";
-   
+   weight = 3;
 }
 
 Knight::Knight( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/knight.obj";
-   
+    weight = 5;
 }
 
 Bishop::Bishop( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/bishop.obj";
-   
+    weight = 3;
 }
 
 Queen::Queen( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/queen.obj";
-    
+    weight = 9;
 }
 
 King::King( float modelXPosition, float modelZPosition, bool black)
     : BasePiece( modelXPosition, modelZPosition,  black) {
     modelPath = "../OpenGL Models/king.obj";
-    
+     weight = 100;
 }

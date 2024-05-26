@@ -7,18 +7,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/norm.hpp>
 #include <string>
 #include <iomanip>
 #include <iostream>
 #include <ctime>
 #include <cmath>
 #include <cstdlib>
+#include <vector>
 
 //custom header files
 #include "keyboard.h"
 #include "render.h"
 #include "timer.h"
 #include "Chesspieces.h"
+#include "bimap.h"
 
 
 //gamestart bool
@@ -59,6 +62,35 @@ float fov = 45.0f;
 // window stuff
 int windowWidth = 1000;
 int windowHeight = 1000;
+
+
+Bimap <XZ , std::string> posmap;
+
+void mapinit() {
+    using namespace std;
+    string letter = "A";
+    int num = 1;
+    for (int i = 1; i < 16; i += 2) {
+        for (int j = 3; j > -12; j -= 2) {
+            string pos= letter[0] + to_string(num);
+            XZ cords(i, j);
+            posmap.insert(cords, pos);
+            if (letter == "H") {
+				letter = "A";
+				num++;
+			}
+            else {
+				letter[0]++;
+			}
+
+           
+        }
+			
+	}
+    XZ temp(3, -11);
+    cout << posmap.getVal(temp) << endl;
+
+}
 
 
 float* g;
@@ -304,22 +336,26 @@ void board() {
 //constructor of pawn takes in parameters of x and z positions
 // array that makes 8 of them
 
-Pawn whitepawn[8] = { Pawn(1.0f, 1.0f,0), Pawn(3.0f, 1.0f,0), Pawn(5.0f, 1.0f,0), Pawn(7.0f, 1.0f,0), Pawn(9.0f, 1.0f,0), Pawn(11.0f, 1.0f,0), Pawn(13.0f, 1.0f,0), Pawn(15.0f, 1.0f,0) };
+
+//white team
+std::vector<Pawn> whitepawns = { Pawn(1.0f, 1.0f,0), Pawn(3.0f, 1.0f,0), Pawn(5.0f, 1.0f,0), Pawn(7.0f, 1.0f,0), Pawn(9.0f, 1.0f,0), Pawn(11.0f, 1.0f,0), Pawn(13.0f, 1.0f,0), Pawn(15.0f, 1.0f,0) };
+std::vector<Knight> whiteknights = { Knight(3.0f, 3.0f,0), Knight(13.0f, 3.0f,0) };
+std::vector<Rook> whiterooks = { Rook(1.0f, 3.0f,0), Rook(15.0f, 3.0f,0) };
+std::vector<Bishop> whitebishops = { Bishop(5.0f, 3.0f,0), Bishop(11.0f, 3.0f,0) };
 Queen whitequeen(7.0f, 3.0f, 0);
-Rook whiterook[2] = { Rook(1.0f, 3.0f,0), Rook(15.0f, 3.0f,0) };
-Knight whiteknight[2] = { Knight(3.0f, 3.0f,0), Knight(13.0f, 3.0f,0) };
 King whiteking(9.0f, 3.0f, 0);
-Bishop whitebishop[2] = { Bishop(5.0f, 3.0f,0), Bishop(11.0f, 3.0f,0) };
 
 
 
-
-Rook blackrook[2] = { Rook(1.0f, -11.0f,1), Rook(15.0f, -11.0f,1) };
-Knight blackknight[2] = { Knight(3.0f, -11.0f,1), Knight(13.0f, -11.0f,1) };
-King blackking(9.0f, -11.0f,1);
-Pawn blackpawn[8] = { Pawn(1.0f, -9.0f,1), Pawn(3.0f, -9.0f,1), Pawn(5.0f, -9.0f,1), Pawn(7.0f, -9.0f,1), Pawn(9.0f, -9.0f,1), Pawn(11.0f, -9.0f,1), Pawn(13.0f, -9.0f,1), Pawn(15.0f, -9.0f,1) };
+//black team
+std::vector<Pawn> blackpawns= { Pawn(1.0f, -9.0f,1), Pawn(3.0f, -9.0f,1), Pawn(5.0f, -9.0f,1), Pawn(7.0f, -9.0f,1), Pawn(9.0f, -9.0f,1), Pawn(11.0f, -9.0f,1), Pawn(13.0f, -9.0f,1), Pawn(15.0f, -9.0f,1) };
+std::vector<Knight> blackknights= { Knight(3.0f, -11.0f,1), Knight(13.0f, -11.0f,1) };
+std::vector<Rook> blackrooks= { Rook(1.0f, -11.0f,1), Rook(15.0f, -11.0f,1) };
+std::vector<Bishop> blackbishops= { Bishop(5.0f, -11.0f,1), Bishop(11.0f, -11.0f,1) };
 Queen blackqueen(7.0f, -11.0f, 1);
-Bishop blackbishop[2] = { Bishop(5.0f, -11.0f,1), Bishop(11.0f, -11.0f,1) };
+King blackking(9.0f, -11.0f,1);
+
+
 
 //Display function
 
@@ -350,16 +386,16 @@ void display() {
 
         // Render the chess pieces
         for (int i = 0; i < 8; i++) {
-            whitepawn[i].Load(view, projection);
-            blackpawn[i].Load(view, projection);
+            whitepawns[i].Load(view, projection);
+            blackpawns[i].Load(view, projection);
         }
         for (int i = 0; i < 2; i++) {
-			whiterook[i].Load(view, projection);
-			blackrook[i].Load(view, projection);
-            whiteknight[i].Load(view, projection);
-            blackknight[i].Load(view, projection);
-            whitebishop[i].Load(view, projection);
-            blackbishop[i].Load(view, projection);
+			whiterooks[i].Load(view, projection);
+			blackrooks[i].Load(view, projection);
+            whiteknights[i].Load(view, projection);
+            blackknights[i].Load(view, projection);
+            whitebishops[i].Load(view, projection);
+            blackbishops[i].Load(view, projection);
 		}
         whitequeen.Load(view, projection);
         blackqueen.Load(view, projection);
@@ -389,12 +425,28 @@ void reshape(int w, int h) { //Not sure what this does but it has to do with cam
 }
 
 
+void initLighting() {
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
+    GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat position[] = { 0.0f, 1.0f, 8.0f, 1.0f };
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+}
 
 
 
 int main(int argc, char** argv) {
-    
+    mapinit();
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(windowWidth, windowHeight);
@@ -404,15 +456,15 @@ int main(int argc, char** argv) {
     
     intializeTimers(timeSeconds);
 
-    if(gamestart)
-        //renders the 8 pawns
-        for (int i = 0; i < 8; i++) {
-            whitepawn[i].Load(view, projection);
-            std::cout << "loaded" << std::endl;
-        }
+    //if(gamestart)
+    //    //renders the 8 pawns
+    //    for (int i = 0; i < 8; i++) {
+    //        whitepawn[i].Load(view, projection);
+    //        std::cout << "loaded" << std::endl;
+    //    }
 
     //sets the g float pointer to point to one of the object's z position so that it gets changed in the keyboard.cpp;
-    g=&whitepawn[1].modelZPosition;
+    g=&whitepawns[1].position.z;
     
    
 
@@ -424,7 +476,7 @@ int main(int argc, char** argv) {
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
-        
+
 
     glClearDepth(1.0f);
     // makes the 3d model have a depth feel to it
@@ -432,6 +484,8 @@ int main(int argc, char** argv) {
     glDepthFunc(GL_LEQUAL);
     glShadeModel(GL_SMOOTH);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    initLighting();
+
 
     glutMainLoop();
     return 0;

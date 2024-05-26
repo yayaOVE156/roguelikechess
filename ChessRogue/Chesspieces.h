@@ -17,6 +17,26 @@
 // it is the base foundation for the rest of the pieces
 // it has a model path, a scene, and a render model function
 
+
+struct XZ {
+    float x;
+    float z;
+
+    XZ() : x(0.0f), z(0.0f) {}
+
+    XZ(float x, float z) : x(x), z(z) {}
+
+    // Overloading the '<' operator for XZ
+    bool operator<(const XZ& other) const {
+        // Compare based on x value first, then z value
+        if (x != other.x)
+            return x < other.x;
+        return z < other.z;
+    }
+
+    
+};
+
      const extern aiScene* scene;
 
 class BasePiece {
@@ -26,8 +46,7 @@ protected:
 
 
 public:
-    float modelXPosition;
-    float modelZPosition;
+    XZ position;
     bool black = false;
     BasePiece(float modelXPosition, float modelZPosition, bool black);
     void Load(const glm::mat4& view, const glm::mat4& projection);
@@ -35,7 +54,9 @@ public:
     const static aiScene* getScene() {
         return scene;
     }
+    int weight;
     
+
 };
 
 class Pawn : public BasePiece {
