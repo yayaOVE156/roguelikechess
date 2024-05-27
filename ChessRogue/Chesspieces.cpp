@@ -23,6 +23,9 @@ void BasePiece::Load(const glm::mat4& view, const glm::mat4& projection) {
     // a possible soltuion is to load the model in the constructor using a different pointer that points to the start address of the model
     // then everytime the Render() is called a different pointer points to the start address of the model pointer
     // think of it as like an for loop where int i is init outside of the loop, but when the loop starts it is set to 0
+    if (destroy) { 
+        return;
+    }
     Assimp::Importer importer;
     scene = importer.ReadFile(modelPath, aiProcess_Triangulate | aiProcess_FlipUVs);
     glLoadIdentity();
@@ -53,6 +56,16 @@ void BasePiece::RenderModel(const aiMesh* mesh) {
         }
     }
     glEnd();
+}
+
+void BasePiece::del() {
+	destroy = true;
+    if (black) {
+        		bScore += weight;
+	}
+    else {
+		wScore += weight;
+    }
 }
 
 Pawn::Pawn( float modelXPosition, float modelZPosition, bool black)

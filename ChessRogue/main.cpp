@@ -182,8 +182,7 @@ void renderText(float x, float y, void* font, const char* string) {
     }
 }
 
-//welcome text, all it does is just display a welcome message and instruction to start the game
-void welcometext() {
+void starttext() {
     using namespace std;
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -197,6 +196,29 @@ void welcometext() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    glColor3f(0.0f, 0.0f, 0.0f);
+
+    // Calculate text position
+    const char* str = "ROGUELIKECHESS";
+    int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)str);
+    int x = (windowWidth - textWidth) / 2;
+    int y = windowHeight - 100;
+
+    // Render the text
+    renderText(x, y, GLUT_BITMAP_HELVETICA_18, str);
+}
+
+void welcometext() {
+    using namespace std;
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 1000, 0, 1000);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     glColor3f(0.0f, 0.0f, 0.0f);
 
@@ -204,7 +226,7 @@ void welcometext() {
     const char* str = "Welcome to the ChessRogue Game\nPress N to start a new game and G to move one of the pawns ;)";
     int textWidth = glutBitmapLength(GLUT_BITMAP_HELVETICA_12, (const unsigned char*)str);
     int x = (windowWidth - textWidth) / 2; 
-    int y = windowHeight / 2; 
+    int y = windowHeight / 2 - 50; // Adjusted y position to ensure it does not overlap with starttext
 
     // Render the text
     renderText(x, y, GLUT_BITMAP_HELVETICA_12, str);
@@ -266,7 +288,8 @@ void timerText() {
 
 
 
-
+int wScore = 0;
+int bScore = 0;
 
 
 
@@ -464,6 +487,35 @@ void bacgkround2() {
     }
     glEnd();
 }
+
+
+
+void scoretext(int whiteScore, int blackScore) {
+    using namespace std;
+
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, windowWidth, 0, windowHeight);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glColor3f(0.0f, 0.0f, 0.0f);
+
+    // Render White Score
+    stringstream whiteStream;
+    whiteStream << "White Score: " << whiteScore;
+    string whiteStr = whiteStream.str();
+    renderText(10, windowHeight - 20, GLUT_BITMAP_HELVETICA_18, whiteStr.c_str());
+
+    // Render Black Score
+    stringstream blackStream;
+    blackStream << "Black Score: " << blackScore;
+    string blackStr = blackStream.str();
+    renderText(10, windowHeight - 40, GLUT_BITMAP_HELVETICA_18, blackStr.c_str());
+}
 //Display function
 
 void display() {
@@ -484,13 +536,13 @@ void display() {
     if (gamestart) {
         // Render the timer
         timerText();
-       
+        scoretext(wScore, bScore);
         // Callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
         currentTimer->countDown();
 
        
-
+        
         // Render the chess pieces
         for (int i = 0; i < 8; i++) {
             whitepawns[i].Load(view, projection);
@@ -508,11 +560,16 @@ void display() {
         blackqueen.Load(view, projection);
         whiteking.Load(view, projection);
         blackking.Load(view, projection);
-       
+       // 
     }
     else {
-        // Display welcome text
-        welcometext();
+
+      
+        while (true) {
+            starttext();
+			welcometext();
+			break;
+        }
     }
     board();
     drawHollowSquare();
@@ -543,6 +600,8 @@ int* arrs = new int[50];
 
 
 int main(int argc, char** argv) {
+    whitepawns[4].del();
+
     for (int i = 0; i < 50; i++) {
         arrx[i] = rand();
     }

@@ -16,7 +16,8 @@
 //base piece class
 // it is the base foundation for the rest of the pieces
 // it has a model path, a scene, and a render model function
-
+extern int wScore;
+extern int bScore;
 
 struct XZ {
     float x;
@@ -47,6 +48,8 @@ protected:
 
 public:
     XZ position;
+    bool destroy = false;
+    void del();
     bool black = false;
     BasePiece(float modelXPosition, float modelZPosition, bool black);
     void Load(const glm::mat4& view, const glm::mat4& projection);
