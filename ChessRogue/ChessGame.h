@@ -24,7 +24,7 @@ struct ChessPiece {
 };
 
 using Chessboard = std::vector<std::vector<ChessPiece>>;
-
+extern std::string move;
 // Function declarations
 void InitializeChessboard(Chessboard& Board);
 void PrintChessboard(const Chessboard& Board);

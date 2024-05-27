@@ -24,8 +24,13 @@ extern glm::vec3 cameraUp;
 extern float cameraSpeed;
 extern bool gamestart;
 extern float* g;
+extern float squareX;
+extern float squareZ;
+extern bool team;
 
 void processInput(unsigned char key, int x, int y);
+
+void specialKeys(int key, int x, int y);
 
 
 #endif // KEYBOARD_H

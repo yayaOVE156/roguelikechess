@@ -130,20 +130,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="background.cpp" />
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="Chesspieces.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="keyboard.h" />
     <ClCompile Include="maincomments.cpp" />
-    <ClCompile Include="render.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="background.h" />
     <ClInclude Include="bimap.h" />
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Chesspieces.h" />
-    <ClInclude Include="render.h" />
     <ClInclude Include="timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

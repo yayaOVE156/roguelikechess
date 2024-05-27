@@ -35,22 +35,22 @@ void PrintChessboard(const Chessboard& Board) {
             const ChessPiece& piece = Board[i][j];
             if (piece.player == Player::White) {
                 switch (piece.piece) {
-                    case Piece::Pawn: std::cout << " ♙ "; break;
-                    case Piece::Knight: std::cout << " ♘ "; break;
-                    case Piece::Bishop: std::cout << " ♗ "; break;
-                    case Piece::Rook: std::cout << " ♖ "; break;
-                    case Piece::Queen: std::cout << " ♕ "; break;
-                    case Piece::King: std::cout << " ♔ "; break;
+                    case Piece::Pawn: std::cout << " wP "; break;
+                    case Piece::Knight: std::cout << " wH "; break;
+                    case Piece::Bishop: std::cout << " wB "; break;
+                    case Piece::Rook: std::cout << " wR "; break;
+                    case Piece::Queen: std::cout << " wQ "; break;
+                    case Piece::King: std::cout << " wK "; break;
                     default: std::cout << "   ";
                 }
             } else if (piece.player == Player::Black) {
                 switch (piece.piece) {
-                    case Piece::Pawn: std::cout << " ♟ "; break;
-                    case Piece::Knight: std::cout << " ♞ "; break;
-                    case Piece::Bishop: std::cout << " ♝ "; break;
-                    case Piece::Rook: std::cout << " ♜ "; break;
-                    case Piece::Queen: std::cout << " ♛ "; break;
-                    case Piece::King: std::cout << " ♚ "; break;
+                    case Piece::Pawn: std::cout << " bP "; break;
+                    case Piece::Knight: std::cout << " bH "; break;
+                    case Piece::Bishop: std::cout << " bB "; break;
+                    case Piece::Rook: std::cout << " bR "; break;
+                    case Piece::Queen: std::cout << " bQ "; break;
+                    case Piece::King: std::cout << " bK "; break;
                     default: std::cout << "   ";
                 }
             } else {
@@ -248,6 +248,8 @@ std::string coordinatesToChessNotation(int x, int y) {
     return std::string(1, file) + std::to_string(rank);
 }
 
+
+extern std::string move;
 void StartChessGame() {
     Chessboard Board;
     InitializeChessboard(Board);

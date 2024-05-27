@@ -51,7 +51,63 @@ void renderModel(const aiMesh* mesh, float xOffset) {
     if (err != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW: " << glewGetErrorString(err) << std::endl;
         return -1;
-    }*/
+    }
+    
+    
+    
+    //void mouse_callback(int x, int y) {
+//    if (firstMouse) {
+//        lastX = x;
+//        lastY = y;
+//        firstMouse = false;
+//    }
+//
+//    float xoffset = x - lastX;
+//    float yoffset = lastY - y; // reversed since y-coordinates range from bottom to top
+//    lastX = x;
+//    lastY = y;
+//
+//    float sensitivity = 0.5f;
+//    xoffset *= sensitivity;
+//    yoffset *= sensitivity;
+//
+//    yaw += xoffset;
+//    pitch += yoffset;
+//
+//    // Make sure that when pitch is out of bounds, screen doesn't get flipped
+//    if (pitch > 89.0f)
+//        pitch = 89.0f;
+//    if (pitch < -89.0f)
+//        pitch = -89.0f;
+//
+//    glm::vec3 front;
+//    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    front.y = sin(glm::radians(pitch));
+//    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+//    cameraFront = glm::normalize(front);
+//    glutPostRedisplay();
+//}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    */
 
 
 

@@ -18,14 +18,21 @@
 
 //custom header files
 #include "keyboard.h"
-#include "render.h"
+#include "background.h"
 #include "timer.h"
 #include "Chesspieces.h"
 #include "bimap.h"
+#include "ChessGame.h"
 
+
+
+
+#define M_PI 3.14159265358979323846
 
 //gamestart bool
 bool gamestart = false;
+
+bool team = false;
 
 //camera view vars
 glm::mat4 view;
@@ -87,8 +94,7 @@ void mapinit() {
         }
 			
 	}
-    XZ temp(3, -11);
-    cout << posmap.getVal(temp) << endl;
+    
 
 }
 
@@ -97,39 +103,64 @@ float* g;
 
 
 //Mouse controlling function, I believe it will be removed due to the camera being fixed in the future
+ float squareX = 1.0f;
+ float squareZ = 3.0f;
+ float squareY = 0.5f;
 
-//void mouse_callback(int x, int y) {
-//    if (firstMouse) {
-//        lastX = x;
-//        lastY = y;
-//        firstMouse = false;
-//    }
-//
-//    float xoffset = x - lastX;
-//    float yoffset = lastY - y; // reversed since y-coordinates range from bottom to top
-//    lastX = x;
-//    lastY = y;
-//
-//    float sensitivity = 0.5f;
-//    xoffset *= sensitivity;
-//    yoffset *= sensitivity;
-//
-//    yaw += xoffset;
-//    pitch += yoffset;
-//
-//    // Make sure that when pitch is out of bounds, screen doesn't get flipped
-//    if (pitch > 89.0f)
-//        pitch = 89.0f;
-//    if (pitch < -89.0f)
-//        pitch = -89.0f;
-//
-//    glm::vec3 front;
-//    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-//    front.y = sin(glm::radians(pitch));
-//    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-//    cameraFront = glm::normalize(front);
-//    glutPostRedisplay();
-//}
+void drawHollowSquare() {
+   
+    float outerSize = 1.0f;
+    float innerSize = 0.75f;
+
+    glPushMatrix(); // Save the current transformation matrix
+
+
+    glColor3f(1.0, 0.0, 0.0); // Set the color to red
+    glBegin(GL_LINES);
+
+    // Draw outer square
+    glVertex3f(-outerSize + squareX, squareY, outerSize + squareZ);
+    glVertex3f(outerSize + squareX, squareY, outerSize + squareZ);
+
+    glVertex3f(outerSize + squareX, squareY, outerSize + squareZ);
+    glVertex3f(outerSize + squareX, squareY, -outerSize + squareZ);
+
+    glVertex3f(outerSize + squareX, squareY, -outerSize + squareZ);
+    glVertex3f(-outerSize + squareX, squareY, -outerSize + squareZ);
+
+    glVertex3f(-outerSize + squareX, squareY, -outerSize + squareZ);
+    glVertex3f(-outerSize + squareX, squareY, outerSize + squareZ);
+
+    // Draw inner square
+    glVertex3f(-innerSize + squareX, squareY, innerSize + squareZ);
+    glVertex3f(innerSize + squareX, squareY, innerSize + squareZ);
+
+    glVertex3f(innerSize + squareX, squareY, innerSize + squareZ);
+    glVertex3f(innerSize + squareX, squareY, -innerSize + squareZ);
+
+    glVertex3f(innerSize + squareX, squareY, -innerSize + squareZ);
+    glVertex3f(-innerSize + squareX, squareY, -innerSize + squareZ);
+
+    glVertex3f(-innerSize + squareX, squareY, -innerSize + squareZ);
+    glVertex3f(-innerSize + squareX, squareY, innerSize + squareZ);
+
+    // Connect outer and inner square
+    glVertex3f(-outerSize + squareX, squareY, outerSize + squareZ);
+    glVertex3f(-innerSize + squareX, squareY, innerSize + squareZ);
+
+    glVertex3f(outerSize + squareX, squareY, outerSize + squareZ);
+    glVertex3f(innerSize + squareX, squareY, innerSize + squareZ);
+
+    glVertex3f(outerSize + squareX, squareY, -outerSize + squareZ);
+    glVertex3f(innerSize + squareX, squareY, -innerSize + squareZ);
+
+    glVertex3f(-outerSize + squareX, squareY, -outerSize + squareZ);
+    glVertex3f(-innerSize + squareX, squareY, -innerSize + squareZ);
+
+
+    glEnd();
+
+}
 
 // calculate width of text
 int getTextWidth(void* font, const std::string& text) {
@@ -217,7 +248,7 @@ void timerText() {
     glLoadIdentity();
 
     if(teamColor == black)
-        glColor3f(0.0f, 0.0f, 0.0f);
+        glColor3f(0.5f, 0.5f, 0.5f);
     else
         glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -234,9 +265,7 @@ void timerText() {
 }
 
 
-void background() {
 
-}
 
 
 
@@ -356,18 +385,96 @@ Queen blackqueen(7.0f, -11.0f, 1);
 King blackking(9.0f, -11.0f,1);
 
 
+void background1() {
+    int width = glutGet(GLUT_WINDOW_WIDTH);
+    int height = glutGet(GLUT_WINDOW_HEIGHT);
+    glm::vec3 sunsetColor1 = glm::vec3(1.0f, 0.5f, 0.0f); // Orange color
+    glm::vec3 sunsetColor2 = glm::vec3(1.0f, 0.0f, 1.0f); // Purple color
+    glBegin(GL_QUADS);
+    // Lower part of the sky (sunset)
+    glColor3fv(glm::value_ptr(sunsetColor1)); // Bottom color
+    glVertex3f(-width / 2.0f, -height / 2.0f, -50.0f);
+    glVertex3f(width / 2.0f, -height / 2.0f, -50.0f);
+    glColor3fv(glm::value_ptr(sunsetColor2)); // Top color
+    glVertex3f(width / 2.0f, height / 2.0f, -50.0f);
+    glVertex3f(-width / 2.0f, height / 2.0f, -50.0f);
+    glEnd();
+    // Draw the sun at the center of the window
+    float sunSize = 2.0f; // Size of the sun
+    int numSegments = 50; // Number of segments to approximate the sun shape
 
+    glColor3f(1.0f, 0.4f, 0.0f); // Yellow color for the sun
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.0f, 0.0f, -49.0f); // Center of the sun
+    for (int i = 0; i <= numSegments; i++) {
+        float angle = static_cast<float>(i) / static_cast<float>(numSegments) * 2.0f * M_PI;
+        float x = sunSize * cos(angle);
+        float y = sunSize * sin(angle);
+        glVertex3f(x, y, -49.0f);
+    }
+    glEnd();
+
+}
+
+
+void bacgkround2() {
+    int width = glutGet(GLUT_WINDOW_WIDTH);
+    int height = glutGet(GLUT_WINDOW_HEIGHT);
+
+    // Define colors for the sky gradient
+    glm::vec3 nightColor1 = glm::vec3(0.0f, 0.0f, 0.1f); // Dark blue
+    glm::vec3 nightColor2 = glm::vec3(0.0f, 0.0f, 0.3f); // Slightly lighter blue
+
+    glBegin(GL_QUADS);
+    // Lower part of the sky (night)
+    glColor3fv(glm::value_ptr(nightColor1)); // Bottom color
+    glVertex3f(-width / 2.0f, -height / 2.0f, 50.0f);
+    glVertex3f(width / 2.0f, -height / 2.0f, 50.0f);
+    glColor3fv(glm::value_ptr(nightColor2));// Top color
+    glVertex3f(width / 2.0f, height / 2.0f, 50.0f);
+    glVertex3f(-width / 2.0f, height / 2.0f, 50.0f);
+    glEnd();
+
+    // Draw stars
+    glColor3f(1.0f, 1.0f, 1.0f); // White color for stars
+    glPointSize(2.0f); // Set the size of the points to represent stars
+    glBegin(GL_POINTS);
+    // Randomly scatter stars across the sky
+    if (team) {
+        for (int i = 0; i < 1000; i++) {
+            float x = static_cast<float>(rand() % width) - width / 2.0f;
+            float y = static_cast<float>(rand() % height) - height / 2.0f;
+            float z = static_cast<float>(rand() % 100) - 50.0f; // Vary depth to create depth effect
+            glVertex3f(x, y, z);
+        }
+        glEnd();
+    }
+    // Draw the moon at the center of the window
+    float moonSize = 2.0f; // Size of the moon
+    int numSegments = 50; // Number of segments to approximate the moon shape
+
+    glColor3f(1.0f, 1.0f, 1.0f); // White color for the moon
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.0f, 0.0f, 49.0f); // Center of the moon
+    for (int i = 0; i <= numSegments; i++) {
+        float angle = static_cast<float>(i) / static_cast<float>(numSegments) * 2.0f * M_PI;
+        float x = moonSize * cos(angle);
+        float y = moonSize * sin(angle);
+        glVertex3f(x, y, 49.0f);
+    }
+    glEnd();
+}
 //Display function
 
 void display() {
     // Set the background color and clear buffers
     glClearColor(0.2f, 0.6f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Set the camera view
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
+    // Set the camera view
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    
     projection = glm::perspective(glm::radians(fov), static_cast<float>(width) / height, 0.1f, 100.0f);
 
     // Render the chessboard
@@ -377,7 +484,7 @@ void display() {
     if (gamestart) {
         // Render the timer
         timerText();
-        std:: cout <<cameraFront.x << " " << cameraFront.y << " " << cameraFront.z << std::endl;
+       
         // Callback for the timer
         glutTimerFunc(1000 / 60, timerCallback, 0);
         currentTimer->countDown();
@@ -408,6 +515,9 @@ void display() {
         welcometext();
     }
     board();
+    drawHollowSquare();
+    background1();
+    bacgkround2();
     // Swap buffers
     glutSwapBuffers();
 }
@@ -425,27 +535,23 @@ void reshape(int w, int h) { //Not sure what this does but it has to do with cam
 }
 
 
-void initLighting() {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
 
-    GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-    GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-    GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat position[] = { 0.0f, 1.0f, 8.0f, 1.0f };
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
-
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-}
-
+std::string move;
+int* arrx = new int[50];
+int* arry = new int[50];
+int* arrs = new int[50];
 
 
 int main(int argc, char** argv) {
+    for (int i = 0; i < 50; i++) {
+        arrx[i] = rand();
+    }
+    for (int i = 0; i < 50; i++) {
+        arry[i] = rand();
+    }
+    for (int i = 0; i < 50; i++) {
+        arrs[i] = rand();
+    }
     mapinit();
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -476,6 +582,7 @@ int main(int argc, char** argv) {
 
     //process input is a function in keyboard.cpp that takes in the keyboard input and processes it accordingly
     glutKeyboardFunc(processInput);
+    glutSpecialFunc(specialKeys);
 
 
     glClearDepth(1.0f);
@@ -484,9 +591,9 @@ int main(int argc, char** argv) {
     glDepthFunc(GL_LEQUAL);
     glShadeModel(GL_SMOOTH);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    initLighting();
+   
 
-
+    
     glutMainLoop();
     return 0;
 }
